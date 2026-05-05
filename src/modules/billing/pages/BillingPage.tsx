@@ -15,7 +15,13 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { useTiers, usePilots, useSubscription, useCreateCheckout, useCancelSubscription } from "../hooks";
+import {
+  useTiers,
+  usePilots,
+  useSubscription,
+  useCreateCheckout,
+  useCancelSubscription,
+} from "../hooks";
 
 const TIER_ICONS: Record<string, typeof Zap> = {
   starter: Zap,
@@ -48,7 +54,11 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
 };
 
 const fmtPrice = (pence: number) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(pence / 100);
+  new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format(pence / 100);
 
 const FEATURE_LABELS: Record<string, string> = {
   channelsTracked: "Channels Tracked",
@@ -58,17 +68,20 @@ const FEATURE_LABELS: Record<string, string> = {
   usersAllowed: "Users Allowed",
 };
 
-function featureDisplay(key: string, val: unknown): string {
+function featureDisplay(_key: string, val: unknown): string {
   if (val === true) return "Included";
   if (val === false) return "Not included";
   if (val === Infinity || val === null) return "Unlimited";
   if (typeof val === "number" && val > 9999) return "Unlimited";
-  if (typeof val === "string") return val.charAt(0).toUpperCase() + val.slice(1);
+  if (typeof val === "string")
+    return val.charAt(0).toUpperCase() + val.slice(1);
   return String(val);
 }
 
 export function BillingPage() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">(
+    "monthly",
+  );
   const { data: tiers, isLoading: tiersLoading } = useTiers();
   const { data: pilots } = usePilots();
   const { data: sub, isLoading: subLoading } = useSubscription();
@@ -99,8 +112,12 @@ export function BillingPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Billing & Subscription</h1>
-        <p className="text-muted-foreground mt-1">Manage your plan, billing cycle, and payment.</p>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Billing & Subscription
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Manage your plan, billing cycle, and payment.
+        </p>
       </div>
 
       {/* Current Subscription */}
@@ -119,29 +136,46 @@ export function BillingPage() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xl font-bold">{sub.tierName}</span>
-                  <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium", TIER_BADGE_COLORS[sub.tier] || "bg-muted text-muted-foreground")}>
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
+                      TIER_BADGE_COLORS[sub.tier] ||
+                        "bg-muted text-muted-foreground",
+                    )}
+                  >
                     {sub.tierName}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground capitalize">{sub.billingCycle} billing</p>
+                <p className="text-sm text-muted-foreground capitalize">
+                  {sub.billingCycle} billing
+                </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className={cn("h-2 w-2 rounded-full", STATUS_CONFIG[sub.status]?.color || "bg-gray-400")} />
-                <span className="text-sm font-medium">{STATUS_CONFIG[sub.status]?.label || sub.status}</span>
+                <span
+                  className={cn(
+                    "h-2 w-2 rounded-full",
+                    STATUS_CONFIG[sub.status]?.color || "bg-gray-400",
+                  )}
+                />
+                <span className="text-sm font-medium">
+                  {STATUS_CONFIG[sub.status]?.label || sub.status}
+                </span>
               </div>
 
               {sub.status === "trial" && sub.trialEndsAt && (
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Calendar className="h-3.5 w-3.5" />
-                  Trial ends {new Date(sub.trialEndsAt).toLocaleDateString("en-GB")}
+                  Trial ends{" "}
+                  {new Date(sub.trialEndsAt).toLocaleDateString("en-GB")}
                 </div>
               )}
 
               {sub.currentPeriodEnd && (
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Calendar className="h-3.5 w-3.5" />
-                  Renews {new Date(sub.currentPeriodEnd).toLocaleDateString("en-GB")}
+                  Renews{" "}
+                  {new Date(sub.currentPeriodEnd).toLocaleDateString("en-GB")}
                 </div>
               )}
 
@@ -160,7 +194,11 @@ export function BillingPage() {
                   onClick={handleCancel}
                   disabled={cancelMut.isPending}
                 >
-                  {cancelMut.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Cancel Plan"}
+                  {cancelMut.isPending ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    "Cancel Plan"
+                  )}
                 </Button>
               )}
             </div>
@@ -193,14 +231,17 @@ export function BillingPage() {
       {/* Pricing Cards */}
       {tiersLoading ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-96" />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-96" />
+          ))}
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {tiers?.map((tier) => {
             const TierIcon = TIER_ICONS[tier.id] || Zap;
             const isCurrent = sub?.tier === tier.id;
-            const price = billingCycle === "annual" ? tier.annualPrice : tier.monthlyPrice;
+            const price =
+              billingCycle === "annual" ? tier.annualPrice : tier.monthlyPrice;
 
             return (
               <Card
@@ -218,7 +259,12 @@ export function BillingPage() {
                 )}
                 <CardHeader className="pb-2 pt-6">
                   <div className="flex items-center gap-2">
-                    <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", TIER_BADGE_COLORS[tier.id])}>
+                    <div
+                      className={cn(
+                        "flex h-8 w-8 items-center justify-center rounded-lg",
+                        TIER_BADGE_COLORS[tier.id],
+                      )}
+                    >
                       <TierIcon className="h-4 w-4" />
                     </div>
                     <CardTitle className="text-lg">{tier.name}</CardTitle>
@@ -228,7 +274,9 @@ export function BillingPage() {
                   <div>
                     {price ? (
                       <>
-                        <span className="text-3xl font-bold">{fmtPrice(price)}</span>
+                        <span className="text-3xl font-bold">
+                          {fmtPrice(price)}
+                        </span>
                         <span className="text-muted-foreground text-sm">
                           /{billingCycle === "annual" ? "year" : "month"}
                         </span>
@@ -242,9 +290,25 @@ export function BillingPage() {
                     {Object.entries(tier.features).map(([key, val]) => {
                       const included = val !== false;
                       return (
-                        <li key={key} className={cn("flex items-center gap-2 text-sm", !included && "text-muted-foreground")}>
-                          <Check className={cn("h-4 w-4 shrink-0", included ? "text-emerald-500" : "text-muted-foreground/30")} />
-                          <span>{FEATURE_LABELS[key] || key}: <strong>{featureDisplay(key, val)}</strong></span>
+                        <li
+                          key={key}
+                          className={cn(
+                            "flex items-center gap-2 text-sm",
+                            !included && "text-muted-foreground",
+                          )}
+                        >
+                          <Check
+                            className={cn(
+                              "h-4 w-4 shrink-0",
+                              included
+                                ? "text-emerald-500"
+                                : "text-muted-foreground/30",
+                            )}
+                          />
+                          <span>
+                            {FEATURE_LABELS[key] || key}:{" "}
+                            <strong>{featureDisplay(key, val)}</strong>
+                          </span>
                         </li>
                       );
                     })}
@@ -287,10 +351,14 @@ export function BillingPage() {
               <Card key={pilot.id} className="border-dashed">
                 <CardContent className="p-5">
                   <h3 className="font-semibold">{pilot.name}</h3>
-                  <p className="text-2xl font-bold mt-1">{fmtPrice(pilot.price)}</p>
+                  <p className="text-2xl font-bold mt-1">
+                    {fmtPrice(pilot.price)}
+                  </p>
                   <p className="text-sm text-muted-foreground mt-1">
                     {pilot.durationWeeks} weeks &middot; Converts to{" "}
-                    <span className="capitalize font-medium">{pilot.convertsTo}</span>
+                    <span className="capitalize font-medium">
+                      {pilot.convertsTo}
+                    </span>
                   </p>
                   <Button size="sm" variant="outline" className="mt-3 w-full">
                     Start Pilot

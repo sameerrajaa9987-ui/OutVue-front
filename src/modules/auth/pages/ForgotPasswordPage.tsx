@@ -64,7 +64,11 @@ export function ForgotPasswordPage() {
               </span>
               , we&apos;ve sent a password reset link. It expires in 1 hour.
             </p>
-            <Button variant="outline" className="mt-2" onClick={() => setSent(false)}>
+            <Button
+              variant="outline"
+              className="mt-2"
+              onClick={() => setSent(false)}
+            >
               Try another email
             </Button>
           </div>

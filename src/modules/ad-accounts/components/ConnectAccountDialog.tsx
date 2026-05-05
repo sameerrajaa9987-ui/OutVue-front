@@ -117,7 +117,9 @@ const PLATFORM_CONFIG: Record<
 // ── Zod schema ────────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  platform: z.enum(["meta", "google", "linkedin"], { required_error: "Select a platform" }),
+  platform: z.enum(["meta", "google", "linkedin"], {
+    required_error: "Select a platform",
+  }),
   accountId: z.string().min(1, "Account ID is required").trim(),
   accessToken: z.string().min(1, "Access token is required").trim(),
   refreshToken: z.string().trim().optional(),
@@ -135,7 +137,12 @@ type Props = {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Props) {
+export function ConnectAccountDialog({
+  open,
+  onClose,
+  onSubmit,
+  isPending,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -144,21 +151,37 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { platform: undefined, accountId: "", accessToken: "", refreshToken: "", label: "" },
+    defaultValues: {
+      platform: undefined,
+      accountId: "",
+      accessToken: "",
+      refreshToken: "",
+      label: "",
+    },
   });
 
   const selectedPlatform = watch("platform") as Platform;
   const config = selectedPlatform ? PLATFORM_CONFIG[selectedPlatform] : null;
 
   useEffect(() => {
-    if (open) reset({ platform: undefined, accountId: "", accessToken: "", refreshToken: "", label: "" });
+    if (open)
+      reset({
+        platform: undefined,
+        accountId: "",
+        accessToken: "",
+        refreshToken: "",
+        label: "",
+      });
   }, [open, reset]);
 
   if (!open) return null;
 
   return (
     <>
-      <div className="fixed inset-0 z-40 bg-black/50 transition-opacity" onClick={onClose} />
+      <div
+        className="fixed inset-0 z-40 bg-black/50 transition-opacity"
+        onClick={onClose}
+      />
       <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col bg-background shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-6 py-4">
@@ -168,14 +191,17 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
           </Button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col overflow-y-auto">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-1 flex-col overflow-y-auto"
+        >
           <div className="flex-1 space-y-5 p-6">
-
             {/* Security notice */}
             <div className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3">
               <ShieldCheck className="h-5 w-5 text-primary flex-shrink-0" />
               <p className="text-xs text-muted-foreground">
-                Tokens are encrypted with AES-256-GCM before storage. Plaintext credentials are never persisted.
+                Tokens are encrypted with AES-256-GCM before storage. Plaintext
+                credentials are never persisted.
               </p>
             </div>
 
@@ -185,17 +211,23 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
               <Select id="platform" {...register("platform")}>
                 <option value="">Select platform…</option>
                 {PLATFORMS.map((p) => (
-                  <option key={p.value} value={p.value}>{p.label}</option>
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
                 ))}
               </Select>
               {errors.platform && (
-                <p className="text-xs text-destructive">{errors.platform.message}</p>
+                <p className="text-xs text-destructive">
+                  {errors.platform.message}
+                </p>
               )}
             </div>
 
             {/* Platform-specific setup instructions */}
             {config && (
-              <div className={cn("rounded-lg border p-4 space-y-2", config.color)}>
+              <div
+                className={cn("rounded-lg border p-4 space-y-2", config.color)}
+              >
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <Info className="h-4 w-4 flex-shrink-0" />
                   How to get your credentials
@@ -205,13 +237,18 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
                     step === "" ? (
                       <li key={i} className="h-1" />
                     ) : (
-                      <li key={i} className={step.startsWith("  ") ? "pl-4" : ""}>
+                      <li
+                        key={i}
+                        className={step.startsWith("  ") ? "pl-4" : ""}
+                      >
                         {!step.startsWith("  ") && !step.endsWith(":") && (
-                          <span className="font-medium text-foreground mr-1">{i + 1}.</span>
+                          <span className="font-medium text-foreground mr-1">
+                            {i + 1}.
+                          </span>
                         )}
                         {step.trimStart()}
                       </li>
-                    )
+                    ),
                   )}
                 </ol>
                 <p className="text-xs text-amber-700 dark:text-amber-400 font-medium pt-1 border-t border-amber-200/50">
@@ -233,10 +270,14 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
                 {...register("accountId")}
               />
               {config && (
-                <p className="text-xs text-muted-foreground">{config.accountIdHint}</p>
+                <p className="text-xs text-muted-foreground">
+                  {config.accountIdHint}
+                </p>
               )}
               {errors.accountId && (
-                <p className="text-xs text-destructive">{errors.accountId.message}</p>
+                <p className="text-xs text-destructive">
+                  {errors.accountId.message}
+                </p>
               )}
             </div>
 
@@ -252,10 +293,14 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
                 {...register("accessToken")}
               />
               {config && (
-                <p className="text-xs text-muted-foreground">{config.tokenHint}</p>
+                <p className="text-xs text-muted-foreground">
+                  {config.tokenHint}
+                </p>
               )}
               {errors.accessToken && (
-                <p className="text-xs text-destructive">{errors.accessToken.message}</p>
+                <p className="text-xs text-destructive">
+                  {errors.accessToken.message}
+                </p>
               )}
             </div>
 
@@ -264,7 +309,9 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
               <div className="space-y-1.5">
                 <Label htmlFor="refreshToken">
                   {config.refreshTokenLabel ?? "Refresh Token"}{" "}
-                  <span className="text-muted-foreground font-normal">(recommended)</span>
+                  <span className="text-muted-foreground font-normal">
+                    (recommended)
+                  </span>
                 </Label>
                 <Input
                   id="refreshToken"
@@ -273,7 +320,9 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
                   {...register("refreshToken")}
                 />
                 {config.refreshTokenHint && (
-                  <p className="text-xs text-muted-foreground">{config.refreshTokenHint}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {config.refreshTokenHint}
+                  </p>
                 )}
               </div>
             )}
@@ -284,7 +333,9 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
             <div className="space-y-1.5">
               <Label htmlFor="label">
                 Label{" "}
-                <span className="text-muted-foreground font-normal">(optional)</span>
+                <span className="text-muted-foreground font-normal">
+                  (optional)
+                </span>
               </Label>
               <Input
                 id="label"
@@ -296,7 +347,12 @@ export function ConnectAccountDialog({ open, onClose, onSubmit, isPending }: Pro
 
           {/* Footer */}
           <div className="flex items-center justify-end gap-3 border-t px-6 py-4">
-            <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={isPending}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>

@@ -24,8 +24,13 @@ export function useSubscription() {
 
 export function useCreateCheckout() {
   return useMutation({
-    mutationFn: ({ tier, billingCycle }: { tier: string; billingCycle: string }) =>
-      billingApi.createCheckout(tier, billingCycle),
+    mutationFn: ({
+      tier,
+      billingCycle,
+    }: {
+      tier: string;
+      billingCycle: string;
+    }) => billingApi.createCheckout(tier, billingCycle),
   });
 }
 
@@ -33,15 +38,22 @@ export function useCancelSubscription() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: billingApi.cancelSubscription,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["billing-subscription"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["billing-subscription"] }),
   });
 }
 
 export function useUpgradeSubscription() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ tier, billingCycle }: { tier: string; billingCycle?: string }) =>
-      billingApi.upgradeSubscription(tier, billingCycle),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["billing-subscription"] }),
+    mutationFn: ({
+      tier,
+      billingCycle,
+    }: {
+      tier: string;
+      billingCycle?: string;
+    }) => billingApi.upgradeSubscription(tier, billingCycle),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["billing-subscription"] }),
   });
 }

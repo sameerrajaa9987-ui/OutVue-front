@@ -61,7 +61,10 @@ export async function getSubscription() {
 }
 
 export async function createCheckout(tier: string, billingCycle: string) {
-  const res = await http.post<{ data: CheckoutResult }>("/billing/create-checkout", { tier, billingCycle });
+  const res = await http.post<{ data: CheckoutResult }>(
+    "/billing/create-checkout",
+    { tier, billingCycle },
+  );
   return res.data.data;
 }
 
@@ -71,6 +74,8 @@ export async function cancelSubscription() {
 }
 
 export async function upgradeSubscription(tier: string, billingCycle?: string) {
-  const res = await http.post<{ data: { message: string; tier: string; billingCycle: string } }>("/billing/upgrade", { tier, billingCycle });
+  const res = await http.post<{
+    data: { message: string; tier: string; billingCycle: string };
+  }>("/billing/upgrade", { tier, billingCycle });
   return res.data.data;
 }

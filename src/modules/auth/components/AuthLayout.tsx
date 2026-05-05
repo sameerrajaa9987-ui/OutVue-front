@@ -37,16 +37,19 @@ export function AuthLayout({ children }: { children: ReactNode }) {
                 key={stat.label}
                 className="rounded-lg border border-white/20 bg-white/15 p-3 backdrop-blur"
               >
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs font-medium text-white/85">{stat.label}</div>
+                <div className="text-2xl font-bold text-white">
+                  {stat.value}
+                </div>
+                <div className="text-xs font-medium text-white/85">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         <p className="text-xs text-white/70">
-          &copy; {new Date().getFullYear()} OUTVUE&trade;. All rights
-          reserved.
+          &copy; {new Date().getFullYear()} OUTVUE&trade;. All rights reserved.
         </p>
       </div>
 

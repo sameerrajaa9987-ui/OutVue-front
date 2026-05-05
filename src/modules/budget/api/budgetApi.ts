@@ -9,6 +9,8 @@ export type BudgetAllocationItem = {
 };
 
 export async function getBudgetAllocation() {
-  const res = await http.get<{ data: BudgetAllocationItem[] }>("/budget/allocation");
+  const res = await http.get<{ data: BudgetAllocationItem[] }>(
+    "/budget/allocation",
+  );
   return res.data.data;
 }

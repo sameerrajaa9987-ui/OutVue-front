@@ -31,8 +31,13 @@ export function useCreateMarketingSpend() {
 export function useUpdateMarketingSpend() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateMarketingSpendPayload }) =>
-      marketingSpendApi.update(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateMarketingSpendPayload;
+    }) => marketingSpendApi.update(id, data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: BASE_KEY });
     },

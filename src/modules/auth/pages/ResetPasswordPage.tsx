@@ -78,7 +78,10 @@ export function ResetPasswordPage() {
             <p className="text-sm text-muted-foreground">
               Your password has been reset. You can now sign in.
             </p>
-            <Button className="mt-2" onClick={() => navigate("/login", { replace: true })}>
+            <Button
+              className="mt-2"
+              onClick={() => navigate("/login", { replace: true })}
+            >
               Go to sign in
             </Button>
           </div>
@@ -138,7 +141,9 @@ export function ResetPasswordPage() {
 
               <Button
                 className="w-full"
-                disabled={mutation.isPending || !form.formState.isValid || !token}
+                disabled={
+                  mutation.isPending || !form.formState.isValid || !token
+                }
                 type="submit"
               >
                 {mutation.isPending ? "Resetting..." : "Reset password"}

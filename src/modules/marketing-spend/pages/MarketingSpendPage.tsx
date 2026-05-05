@@ -21,16 +21,20 @@ import {
   useDeleteMarketingSpend,
   useBulkCreateMarketingSpend,
 } from "../hooks";
-import type { MarketingSpend, MarketingSpendFilters as Filters } from "../types";
+import type {
+  MarketingSpend,
+  MarketingSpendFilters as Filters,
+} from "../types";
 import { MARKETING_PLATFORMS, PLATFORM_COLORS } from "../types";
 import { MarketingSpendDialog } from "../components/MarketingSpendDialog";
 import { MarketingSpendFilters } from "../components/MarketingSpendFilters";
 
 const fmt = (n: number) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(n);
+  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(
+    n,
+  );
 
-const fmtNum = (n: number) =>
-  new Intl.NumberFormat("en-GB").format(n);
+const fmtNum = (n: number) => new Intl.NumberFormat("en-GB").format(n);
 
 const pct = (n: number) => `${n.toFixed(1)}%`;
 
@@ -45,7 +49,11 @@ export function MarketingSpendPage() {
   const [editing, setEditing] = useState<MarketingSpend | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<MarketingSpend | null>(null);
 
-  const { data, isLoading } = useMarketingSpendList({ ...filters, page, limit: 20 });
+  const { data, isLoading } = useMarketingSpendList({
+    ...filters,
+    page,
+    limit: 20,
+  });
   const createMut = useCreateMarketingSpend();
   const updateMut = useUpdateMarketingSpend();
   const deleteMut = useDeleteMarketingSpend();
@@ -110,7 +118,10 @@ export function MarketingSpendPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <CsvUploadButton onUpload={handleCsvUpload} isPending={bulkMut.isPending} />
+          <CsvUploadButton
+            onUpload={handleCsvUpload}
+            isPending={bulkMut.isPending}
+          />
           <Button onClick={openCreate}>
             <Plus className="mr-2 h-4 w-4" />
             Add Campaign
@@ -141,7 +152,8 @@ export function MarketingSpendPage() {
               <BarChart3 className="h-12 w-12 text-muted-foreground/40 mb-4" />
               <h3 className="text-lg font-semibold">No campaigns yet</h3>
               <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                Add your first marketing campaign to start tracking spend and performance.
+                Add your first marketing campaign to start tracking spend and
+                performance.
               </p>
               <Button className="mt-4" onClick={openCreate}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -153,17 +165,25 @@ export function MarketingSpendPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/40">
-                    <th className="px-4 py-3 text-left font-medium">Platform</th>
-                    <th className="px-4 py-3 text-left font-medium">Campaign</th>
+                    <th className="px-4 py-3 text-left font-medium">
+                      Platform
+                    </th>
+                    <th className="px-4 py-3 text-left font-medium">
+                      Campaign
+                    </th>
                     <th className="px-4 py-3 text-right font-medium">Spend</th>
                     <th className="px-4 py-3 text-right font-medium">Clicks</th>
-                    <th className="px-4 py-3 text-right font-medium">Impressions</th>
+                    <th className="px-4 py-3 text-right font-medium">
+                      Impressions
+                    </th>
                     <th className="px-4 py-3 text-right font-medium">Leads</th>
                     <th className="px-4 py-3 text-right font-medium">Conv.</th>
                     <th className="px-4 py-3 text-right font-medium">CPL</th>
                     <th className="px-4 py-3 text-right font-medium">CTR</th>
                     <th className="px-4 py-3 text-left font-medium">Period</th>
-                    <th className="px-4 py-3 text-right font-medium">Actions</th>
+                    <th className="px-4 py-3 text-right font-medium">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -300,8 +320,8 @@ export function MarketingSpendPage() {
             <h3 className="text-lg font-semibold">Delete Campaign</h3>
             <p className="text-sm text-muted-foreground mt-2">
               Are you sure you want to delete{" "}
-              <strong>{deleteTarget.campaignName}</strong>? This action cannot be
-              undone.
+              <strong>{deleteTarget.campaignName}</strong>? This action cannot
+              be undone.
             </p>
             <div className="flex justify-end gap-3 mt-6">
               <Button variant="outline" onClick={() => setDeleteTarget(null)}>

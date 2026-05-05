@@ -45,7 +45,8 @@ export function useDeleteBdActivity() {
 export function useBulkCreateBdActivity() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateBdActivityPayload[]) => bdActivityApi.bulkCreate(data),
+    mutationFn: (data: CreateBdActivityPayload[]) =>
+      bdActivityApi.bulkCreate(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }

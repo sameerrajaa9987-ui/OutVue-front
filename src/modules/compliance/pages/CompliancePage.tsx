@@ -33,7 +33,10 @@ export function CompliancePage() {
   const { data: disclaimer, isLoading: dLoading } = useDisclaimer();
   const { data: gdpr, isLoading: gLoading } = useGdprNotice();
   const { data: dataSources, isLoading: dsLoading } = useDataSources();
-  const { data: logsData, isLoading: lLoading } = useAuditLogs({ page: logPage, limit: 20 });
+  const { data: logsData, isLoading: lLoading } = useAuditLogs({
+    page: logPage,
+    limit: 20,
+  });
   const ackMut = useAcknowledgeLog();
 
   async function handleAck(id: string) {
@@ -44,8 +47,12 @@ export function CompliancePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Compliance & Data Governance</h1>
-        <p className="text-muted-foreground mt-1">Transparency, audit trail, and UK GDPR compliance.</p>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Compliance & Data Governance
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Transparency, audit trail, and UK GDPR compliance.
+        </p>
       </div>
 
       {/* Disclaimer Banner */}
@@ -54,7 +61,11 @@ export function CompliancePage() {
           <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold text-sm">AI Disclaimer</p>
-            {dLoading ? <Skeleton className="h-4 w-full mt-1" /> : <p className="text-sm text-muted-foreground mt-1">{disclaimer}</p>}
+            {dLoading ? (
+              <Skeleton className="h-4 w-full mt-1" />
+            ) : (
+              <p className="text-sm text-muted-foreground mt-1">{disclaimer}</p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -70,12 +81,18 @@ export function CompliancePage() {
           </CardHeader>
           <CardContent>
             {gLoading ? (
-              <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-4" />)}</div>
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-4" />
+                ))}
+              </div>
             ) : gdpr ? (
               <dl className="space-y-3 text-sm">
                 {Object.entries(gdpr).map(([key, val]) => (
                   <div key={key}>
-                    <dt className="font-medium capitalize">{key.replace(/([A-Z])/g, " $1")}</dt>
+                    <dt className="font-medium capitalize">
+                      {key.replace(/([A-Z])/g, " $1")}
+                    </dt>
                     <dd className="text-muted-foreground mt-0.5">{val}</dd>
                   </div>
                 ))}
@@ -94,15 +111,28 @@ export function CompliancePage() {
           </CardHeader>
           <CardContent>
             {dsLoading ? (
-              <div className="space-y-2">{Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-8" />)}</div>
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-8" />
+                ))}
+              </div>
             ) : !dataSources || dataSources.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No data sources yet.</p>
+              <p className="text-sm text-muted-foreground">
+                No data sources yet.
+              </p>
             ) : (
               <div className="space-y-2">
                 {dataSources.map((ds) => (
-                  <div key={ds.source} className="flex items-center justify-between bg-muted/40 rounded-lg p-3">
-                    <span className="text-sm font-medium capitalize">{ds.source.replace(/([a-z])([A-Z])/g, "$1 $2")}</span>
-                    <span className="text-sm text-muted-foreground tabular-nums">{ds.records} records</span>
+                  <div
+                    key={ds.source}
+                    className="flex items-center justify-between bg-muted/40 rounded-lg p-3"
+                  >
+                    <span className="text-sm font-medium capitalize">
+                      {ds.source.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                    </span>
+                    <span className="text-sm text-muted-foreground tabular-nums">
+                      {ds.records} records
+                    </span>
                   </div>
                 ))}
               </div>
@@ -121,9 +151,16 @@ export function CompliancePage() {
         </CardHeader>
         <CardContent className="p-0">
           {lLoading ? (
-            <div className="p-4 space-y-3">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-12" />)}</div>
+            <div className="p-4 space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} className="h-12" />
+              ))}
+            </div>
           ) : !logsData || logsData.items.length === 0 ? (
-            <p className="p-6 text-center text-sm text-muted-foreground">No audit entries yet. They are created automatically when recommendations are generated.</p>
+            <p className="p-6 text-center text-sm text-muted-foreground">
+              No audit entries yet. They are created automatically when
+              recommendations are generated.
+            </p>
           ) : (
             <>
               <div className="overflow-x-auto">
@@ -131,31 +168,64 @@ export function CompliancePage() {
                   <thead>
                     <tr className="border-b bg-muted/40">
                       <th className="px-4 py-3 text-left font-medium">Event</th>
-                      <th className="px-4 py-3 text-left font-medium">Details</th>
-                      <th className="px-4 py-3 text-left font-medium">Status</th>
-                      <th className="px-4 py-3 text-left font-medium">Timestamp</th>
-                      <th className="px-4 py-3 text-right font-medium">Action</th>
+                      <th className="px-4 py-3 text-left font-medium">
+                        Details
+                      </th>
+                      <th className="px-4 py-3 text-left font-medium">
+                        Status
+                      </th>
+                      <th className="px-4 py-3 text-left font-medium">
+                        Timestamp
+                      </th>
+                      <th className="px-4 py-3 text-right font-medium">
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {logsData.items.map((log, idx) => (
-                      <tr key={log.id} className={cn("border-b", idx % 2 === 0 ? "bg-background" : "bg-muted/10")}>
-                        <td className="px-4 py-3 font-medium">{EVENT_LABELS[log.eventType] || log.eventType}</td>
+                      <tr
+                        key={log.id}
+                        className={cn(
+                          "border-b",
+                          idx % 2 === 0 ? "bg-background" : "bg-muted/10",
+                        )}
+                      >
+                        <td className="px-4 py-3 font-medium">
+                          {EVENT_LABELS[log.eventType] || log.eventType}
+                        </td>
                         <td className="px-4 py-3 text-muted-foreground max-w-[200px] truncate">
-                          {log.payload?.count ? `${log.payload.count} items` : "—"}
+                          {log.payload?.count
+                            ? `${log.payload.count} items`
+                            : "—"}
                         </td>
                         <td className="px-4 py-3">
                           {log.acknowledged ? (
-                            <span className="inline-flex items-center gap-1 text-xs text-emerald-600"><CheckCircle2 className="h-3 w-3" />Acknowledged</span>
+                            <span className="inline-flex items-center gap-1 text-xs text-emerald-600">
+                              <CheckCircle2 className="h-3 w-3" />
+                              Acknowledged
+                            </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs text-amber-600"><Clock className="h-3 w-3" />Pending</span>
+                            <span className="inline-flex items-center gap-1 text-xs text-amber-600">
+                              <Clock className="h-3 w-3" />
+                              Pending
+                            </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 tabular-nums text-muted-foreground">{new Date(log.createdAt).toLocaleString("en-GB")}</td>
+                        <td className="px-4 py-3 tabular-nums text-muted-foreground">
+                          {new Date(log.createdAt).toLocaleString("en-GB")}
+                        </td>
                         <td className="px-4 py-3 text-right">
                           {!log.acknowledged && (
-                            <Button size="sm" variant="outline" className="gap-1" onClick={() => handleAck(log.id)} disabled={ackMut.isPending}>
-                              <Eye className="h-3 w-3" />Acknowledge
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="gap-1"
+                              onClick={() => handleAck(log.id)}
+                              disabled={ackMut.isPending}
+                            >
+                              <Eye className="h-3 w-3" />
+                              Acknowledge
                             </Button>
                           )}
                         </td>
@@ -166,9 +236,25 @@ export function CompliancePage() {
               </div>
               {logsData.meta.totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 p-4">
-                  <Button size="sm" variant="outline" disabled={!logsData.meta.hasPrevPage} onClick={() => setLogPage((p) => p - 1)}>Prev</Button>
-                  <span className="text-sm text-muted-foreground">{logsData.meta.page} / {logsData.meta.totalPages}</span>
-                  <Button size="sm" variant="outline" disabled={!logsData.meta.hasNextPage} onClick={() => setLogPage((p) => p + 1)}>Next</Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!logsData.meta.hasPrevPage}
+                    onClick={() => setLogPage((p) => p - 1)}
+                  >
+                    Prev
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    {logsData.meta.page} / {logsData.meta.totalPages}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!logsData.meta.hasNextPage}
+                    onClick={() => setLogPage((p) => p + 1)}
+                  >
+                    Next
+                  </Button>
                 </div>
               )}
             </>

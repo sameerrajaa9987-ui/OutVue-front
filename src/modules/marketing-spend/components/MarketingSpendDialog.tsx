@@ -212,11 +212,7 @@ export function MarketingSpendDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="startDate">Start Date</Label>
-                <Input
-                  id="startDate"
-                  type="date"
-                  {...register("startDate")}
-                />
+                <Input id="startDate" type="date" {...register("startDate")} />
                 {errors.startDate && (
                   <p className="text-xs text-destructive">
                     {errors.startDate.message}

@@ -42,7 +42,9 @@ export async function downloadGdprExport(): Promise<void> {
   a.href = url;
   const disposition = res.headers["content-disposition"] as string | undefined;
   const match = disposition?.match(/filename="(.+)"/);
-  a.download = match?.[1] ?? `grospective-export-${new Date().toISOString().split("T")[0]}.json`;
+  a.download =
+    match?.[1] ??
+    `grospective-export-${new Date().toISOString().split("T")[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }

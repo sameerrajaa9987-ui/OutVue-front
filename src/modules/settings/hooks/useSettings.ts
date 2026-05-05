@@ -26,7 +26,12 @@ export function useUpdateProfile() {
     mutationFn: (payload: UpdateProfilePayload) => updateProfile(payload),
     onSuccess: (res) => {
       qc.invalidateQueries({ queryKey: PROFILE_KEY });
-      dispatch(updateUser({ name: res.data.name, businessType: res.data.businessType ?? undefined }));
+      dispatch(
+        updateUser({
+          name: res.data.name,
+          businessType: res.data.businessType ?? undefined,
+        }),
+      );
       toast.success(res.message ?? "Profile updated");
     },
     onError: (err) => toast.error(getApiErrorMessage(err)),

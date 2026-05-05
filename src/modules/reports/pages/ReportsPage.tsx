@@ -32,12 +32,36 @@ const PLATFORMS = [
 ];
 
 const PDF_SECTIONS = [
-  { icon: BarChart3, title: "Monthly Growth Performance Summary", desc: "Total spend, leads, conversions, CPL, CTR across all campaigns." },
-  { icon: Filter, title: "Budget Efficiency Report", desc: "Growth spend breakdown by marketing, BD, and operational costs with blended CPL." },
-  { icon: CalendarDays, title: "Channel Performance Overview", desc: "Side-by-side platform comparison table with spend, leads, CPL, CTR, and conversions." },
-  { icon: Users, title: "BD Contribution Report", desc: "Business development costs, leads generated, revenue converted, and BD ROI." },
-  { icon: Lightbulb, title: "Recommended Actions", desc: "AI-generated high and medium priority recommendations for budget optimisation." },
-  { icon: AlertTriangle, title: "Risk / Inefficiency Alerts", desc: "Underperforming campaigns, poor creatives, overfunded channels, and agency concerns." },
+  {
+    icon: BarChart3,
+    title: "Monthly Growth Performance Summary",
+    desc: "Total spend, leads, conversions, CPL, CTR across all campaigns.",
+  },
+  {
+    icon: Filter,
+    title: "Budget Efficiency Report",
+    desc: "Growth spend breakdown by marketing, BD, and operational costs with blended CPL.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Channel Performance Overview",
+    desc: "Side-by-side platform comparison table with spend, leads, CPL, CTR, and conversions.",
+  },
+  {
+    icon: Users,
+    title: "BD Contribution Report",
+    desc: "Business development costs, leads generated, revenue converted, and BD ROI.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Recommended Actions",
+    desc: "AI-generated high and medium priority recommendations for budget optimisation.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Risk / Inefficiency Alerts",
+    desc: "Underperforming campaigns, poor creatives, overfunded channels, and agency concerns.",
+  },
 ];
 
 export function ReportsPage() {
@@ -90,11 +114,21 @@ export function ReportsPage() {
           <div className="flex flex-wrap items-end gap-4">
             <div className="space-y-1">
               <Label className="text-xs">Start Date</Label>
-              <Input type="date" className="w-[160px]" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+              <Input
+                type="date"
+                className="w-[160px]"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
             <div className="space-y-1">
               <Label className="text-xs">End Date</Label>
-              <Input type="date" className="w-[160px]" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+              <Input
+                type="date"
+                className="w-[160px]"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </div>
             <div className="space-y-1">
               <Label className="text-xs">Platform</Label>
@@ -104,12 +138,22 @@ export function ReportsPage() {
                 onChange={(e) => setPlatform(e.target.value)}
               >
                 {PLATFORMS.map((p) => (
-                  <option key={p.value} value={p.value}>{p.label}</option>
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
                 ))}
               </select>
             </div>
             {(startDate || endDate || platform) && (
-              <Button size="sm" variant="ghost" onClick={() => { setStartDate(""); setEndDate(""); setPlatform(""); }}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  setStartDate("");
+                  setEndDate("");
+                  setPlatform("");
+                }}
+              >
                 Clear filters
               </Button>
             )}
@@ -129,7 +173,9 @@ export function ReportsPage() {
               <div className="flex-1">
                 <h3 className="font-semibold text-lg">CSV Export</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Download raw marketing campaign data as a spreadsheet. Includes campaign name, platform, spend, clicks, impressions, leads, conversions, CPL, CTR, and date range.
+                  Download raw marketing campaign data as a spreadsheet.
+                  Includes campaign name, platform, spend, clicks, impressions,
+                  leads, conversions, CPL, CTR, and date range.
                 </p>
                 <Button
                   className="mt-4 gap-2"
@@ -137,7 +183,11 @@ export function ReportsPage() {
                   onClick={handleCsv}
                   disabled={csvMut.isPending}
                 >
-                  {csvMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  {csvMut.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
                   Download CSV
                 </Button>
               </div>
@@ -155,14 +205,20 @@ export function ReportsPage() {
               <div className="flex-1">
                 <h3 className="font-semibold text-lg">PDF Report</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Generate a comprehensive growth intelligence report with performance summaries, channel breakdowns, BD analysis, and AI recommendations.
+                  Generate a comprehensive growth intelligence report with
+                  performance summaries, channel breakdowns, BD analysis, and AI
+                  recommendations.
                 </p>
                 <Button
                   className="mt-4 gap-2"
                   onClick={handlePdf}
                   disabled={pdfMut.isPending}
                 >
-                  {pdfMut.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  {pdfMut.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
                   Generate PDF
                 </Button>
               </div>
@@ -192,9 +248,13 @@ export function ReportsPage() {
                 >
                   <div className="flex items-center gap-2">
                     <SectionIcon className="h-4 w-4 text-primary" />
-                    <h4 className="text-sm font-semibold">{i + 1}. {section.title}</h4>
+                    <h4 className="text-sm font-semibold">
+                      {i + 1}. {section.title}
+                    </h4>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{section.desc}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {section.desc}
+                  </p>
                 </div>
               );
             })}

@@ -31,17 +31,25 @@ export async function list(params?: ListParams) {
 }
 
 export async function create(data: CreateOperationalCostPayload) {
-  const res = await http.post<{ data: OperationalCost }>("/operational-cost", data);
+  const res = await http.post<{ data: OperationalCost }>(
+    "/operational-cost",
+    data,
+  );
   return res.data.data;
 }
 
 export async function getById(id: string) {
-  const res = await http.get<{ data: OperationalCost }>(`/operational-cost/${id}`);
+  const res = await http.get<{ data: OperationalCost }>(
+    `/operational-cost/${id}`,
+  );
   return res.data.data;
 }
 
 export async function update(id: string, data: UpdateOperationalCostPayload) {
-  const res = await http.patch<{ data: OperationalCost }>(`/operational-cost/${id}`, data);
+  const res = await http.patch<{ data: OperationalCost }>(
+    `/operational-cost/${id}`,
+    data,
+  );
   return res.data.data;
 }
 

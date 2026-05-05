@@ -18,7 +18,11 @@ export type AdminUser = {
 export type MRRData = { mrr: number; activeSubscriptions: number };
 export type ARRData = { arr: number };
 export type ChurnData = { total: number; cancelled: number; churnRate: number };
-export type LTVData = { ltv: number; avgRevenuePerAccount: number; avgLifetimeMonths: number };
+export type LTVData = {
+  ltv: number;
+  avgRevenuePerAccount: number;
+  avgLifetimeMonths: number;
+};
 
 export type RevenueSummary = {
   totalUsers: number;
@@ -28,9 +32,18 @@ export type RevenueSummary = {
   churnRate: number;
   ltv: number;
   avgRevenuePerAccount: number;
-  revenueByTier: { tier: string; name: string; count: number; monthlyRevenue: number }[];
+  revenueByTier: {
+    tier: string;
+    name: string;
+    count: number;
+    monthlyRevenue: number;
+  }[];
   statusBreakdown: { status: string; count: number }[];
-  pilotConversion: { totalPilots: number; convertedPilots: number; conversionRate: number };
+  pilotConversion: {
+    totalPilots: number;
+    convertedPilots: number;
+    conversionRate: number;
+  };
 };
 
 export async function getUsers() {
@@ -59,6 +72,8 @@ export async function getLTV() {
 }
 
 export async function getRevenueSummary() {
-  const res = await http.get<{ data: RevenueSummary }>("/admin/revenue/summary");
+  const res = await http.get<{ data: RevenueSummary }>(
+    "/admin/revenue/summary",
+  );
   return res.data.data;
 }

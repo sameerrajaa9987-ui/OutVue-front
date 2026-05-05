@@ -343,9 +343,7 @@ export function OnboardingPage() {
                       key={ch}
                       label={ch}
                       active={form.keyRevenueChannels.includes(ch)}
-                      onClick={() =>
-                        toggleArrayItem("keyRevenueChannels", ch)
-                      }
+                      onClick={() => toggleArrayItem("keyRevenueChannels", ch)}
                     />
                   ))}
                 </div>
@@ -387,10 +385,7 @@ export function OnboardingPage() {
         {/* Navigation */}
         <div className="flex items-center justify-between">
           {step > 0 ? (
-            <Button
-              variant="outline"
-              onClick={() => setStep((s) => s - 1)}
-            >
+            <Button variant="outline" onClick={() => setStep((s) => s - 1)}>
               <ChevronLeft className="mr-1 h-4 w-4" />
               Back
             </Button>
@@ -410,10 +405,7 @@ export function OnboardingPage() {
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           ) : (
-            <Button
-              onClick={handleFinish}
-              disabled={saveMutation.isPending}
-            >
+            <Button onClick={handleFinish} disabled={saveMutation.isPending}>
               {saveMutation.isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

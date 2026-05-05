@@ -31,6 +31,8 @@ export type ScenarioResult = {
 };
 
 export async function runScenario(adjustments: Adjustment[]) {
-  const res = await http.post<{ data: ScenarioResult }>("/scenarios/model", { adjustments });
+  const res = await http.post<{ data: ScenarioResult }>("/scenarios/model", {
+    adjustments,
+  });
   return res.data.data;
 }

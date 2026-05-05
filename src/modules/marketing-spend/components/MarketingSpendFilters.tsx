@@ -1,7 +1,10 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { MARKETING_PLATFORMS, type MarketingSpendFilters as Filters } from "../types";
+import {
+  MARKETING_PLATFORMS,
+  type MarketingSpendFilters as Filters,
+} from "../types";
 
 type MarketingSpendFiltersProps = {
   filters: Filters;

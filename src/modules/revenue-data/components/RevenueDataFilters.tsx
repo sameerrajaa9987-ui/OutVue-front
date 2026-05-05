@@ -24,13 +24,17 @@ export function RevenueDataFilters({ filters, onChange }: Props) {
         className="w-[200px]"
         placeholder="Source filter"
         value={filters.source ?? ""}
-        onChange={(e) => onChange({ ...filters, source: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, source: e.target.value || undefined })
+        }
       />
       <Input
         className="w-[160px]"
         placeholder="Period (e.g. 2026-01)"
         value={filters.period ?? ""}
-        onChange={(e) => onChange({ ...filters, period: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, period: e.target.value || undefined })
+        }
       />
     </div>
   );

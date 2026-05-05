@@ -1,5 +1,10 @@
 import { useRef, useState, type ChangeEvent } from "react";
-import { Upload, FileSpreadsheet, AlertCircle, CheckCircle2 } from "lucide-react";
+import {
+  Upload,
+  FileSpreadsheet,
+  AlertCircle,
+  CheckCircle2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -180,17 +185,16 @@ export function CsvUploadButton({
             </div>
 
             <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setPreview(null)}
-              >
+              <Button variant="outline" onClick={() => setPreview(null)}>
                 Cancel
               </Button>
               <Button
                 onClick={handleConfirm}
                 disabled={preview.rows.length === 0 || isPending}
               >
-                {isPending ? "Uploading…" : `Upload ${preview.rows.length} rows`}
+                {isPending
+                  ? "Uploading…"
+                  : `Upload ${preview.rows.length} rows`}
               </Button>
             </div>
           </div>

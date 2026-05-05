@@ -1,12 +1,5 @@
 import { useState, useCallback } from "react";
-import {
-  Plus,
-  Trash2,
-  Link2,
-  Unlink,
-  RefreshCw,
-  Plug,
-} from "lucide-react";
+import { Plus, Trash2, Link2, Unlink, RefreshCw, Plug } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -57,7 +50,10 @@ export function AdAccountsPage() {
       if (result.tokenValid) {
         toast.success("Account connected successfully");
       } else {
-        toast.warning(result.validationMessage || "Account saved but token could not be verified");
+        toast.warning(
+          result.validationMessage ||
+            "Account saved but token could not be verified",
+        );
       }
       setDialogOpen(false);
     } catch (err) {
@@ -79,8 +75,13 @@ export function AdAccountsPage() {
   async function toggleStatus(account: AdAccount) {
     const newStatus = account.status === "active" ? "inactive" : "active";
     try {
-      await updateMut.mutateAsync({ id: account.id, data: { status: newStatus } });
-      toast.success(`Account ${newStatus === "active" ? "activated" : "deactivated"}`);
+      await updateMut.mutateAsync({
+        id: account.id,
+        data: { status: newStatus },
+      });
+      toast.success(
+        `Account ${newStatus === "active" ? "activated" : "deactivated"}`,
+      );
     } catch (err) {
       toast.error(getApiErrorMessage(err));
     }
@@ -91,7 +92,9 @@ export function AdAccountsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Connected Ad Accounts</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Connected Ad Accounts
+          </h1>
           <p className="text-muted-foreground mt-1">
             Connect your advertising platforms to enable automatic data syncing.
           </p>
@@ -103,15 +106,24 @@ export function AdAccountsPage() {
               onClick={async () => {
                 try {
                   const results = await syncAllMut.mutateAsync();
-                  const ok = results.filter((r) => r.status === "success").length;
-                  toast.success(`Sync complete: ${ok}/${results.length} accounts synced`);
+                  const ok = results.filter(
+                    (r) => r.status === "success",
+                  ).length;
+                  toast.success(
+                    `Sync complete: ${ok}/${results.length} accounts synced`,
+                  );
                 } catch (err) {
                   toast.error(getApiErrorMessage(err));
                 }
               }}
               disabled={syncAllMut.isPending}
             >
-              <RefreshCw className={cn("mr-2 h-4 w-4", syncAllMut.isPending && "animate-spin")} />
+              <RefreshCw
+                className={cn(
+                  "mr-2 h-4 w-4",
+                  syncAllMut.isPending && "animate-spin",
+                )}
+              />
               {syncAllMut.isPending ? "Syncing…" : "Sync All"}
             </Button>
           )}
@@ -135,7 +147,8 @@ export function AdAccountsPage() {
             <Plug className="h-12 w-12 text-muted-foreground/40 mb-4" />
             <h3 className="text-lg font-semibold">No accounts connected</h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-              Connect your Meta, Google, or LinkedIn ad accounts to start syncing campaign data automatically.
+              Connect your Meta, Google, or LinkedIn ad accounts to start
+              syncing campaign data automatically.
             </p>
             <Button className="mt-4" onClick={openConnect}>
               <Plus className="mr-2 h-4 w-4" />
@@ -160,10 +173,16 @@ export function AdAccountsPage() {
               <CardContent className="p-5 pt-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{platformIcon(acc.platform)}</span>
+                    <span className="text-2xl">
+                      {platformIcon(acc.platform)}
+                    </span>
                     <div>
-                      <h3 className="font-semibold">{platformLabel(acc.platform)}</h3>
-                      <p className="text-xs text-muted-foreground font-mono">{acc.accountId}</p>
+                      <h3 className="font-semibold">
+                        {platformLabel(acc.platform)}
+                      </h3>
+                      <p className="text-xs text-muted-foreground font-mono">
+                        {acc.accountId}
+                      </p>
                     </div>
                   </div>
                   <span
@@ -177,7 +196,9 @@ export function AdAccountsPage() {
                 </div>
 
                 {acc.label && (
-                  <p className="text-sm text-muted-foreground mb-3">{acc.label}</p>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    {acc.label}
+                  </p>
                 )}
 
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
@@ -201,7 +222,12 @@ export function AdAccountsPage() {
                     }}
                     disabled={syncOneMut.isPending || acc.status === "inactive"}
                   >
-                    <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", syncOneMut.isPending && "animate-spin")} />
+                    <RefreshCw
+                      className={cn(
+                        "mr-1.5 h-3.5 w-3.5",
+                        syncOneMut.isPending && "animate-spin",
+                      )}
+                    />
                     Sync
                   </Button>
                   <Button
@@ -212,9 +238,15 @@ export function AdAccountsPage() {
                     disabled={updateMut.isPending}
                   >
                     {acc.status === "active" ? (
-                      <><Unlink className="mr-1.5 h-3.5 w-3.5" />Deactivate</>
+                      <>
+                        <Unlink className="mr-1.5 h-3.5 w-3.5" />
+                        Deactivate
+                      </>
                     ) : (
-                      <><Link2 className="mr-1.5 h-3.5 w-3.5" />Activate</>
+                      <>
+                        <Link2 className="mr-1.5 h-3.5 w-3.5" />
+                        Activate
+                      </>
                     )}
                   </Button>
                   <Button
@@ -254,16 +286,23 @@ export function AdAccountsPage() {
                     <span
                       className={cn(
                         "h-2 w-2 rounded-full",
-                        log.status === "success" ? "bg-emerald-500"
-                          : log.status === "error" ? "bg-red-500"
-                          : log.status === "running" ? "bg-amber-500 animate-pulse"
-                          : "bg-gray-400",
+                        log.status === "success"
+                          ? "bg-emerald-500"
+                          : log.status === "error"
+                            ? "bg-red-500"
+                            : log.status === "running"
+                              ? "bg-amber-500 animate-pulse"
+                              : "bg-gray-400",
                       )}
                     />
                     <div>
-                      <span className="font-medium capitalize">{log.platform}</span>
+                      <span className="font-medium capitalize">
+                        {log.platform}
+                      </span>
                       <span className="text-muted-foreground mx-1.5">—</span>
-                      <span className="text-muted-foreground">{log.message || log.status}</span>
+                      <span className="text-muted-foreground">
+                        {log.message || log.status}
+                      </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
@@ -300,16 +339,24 @@ export function AdAccountsPage() {
       {/* Delete Confirmation */}
       {deleteTarget && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setDeleteTarget(null)} />
+          <div
+            className="fixed inset-0 z-40 bg-black/50"
+            onClick={() => setDeleteTarget(null)}
+          />
           <div className="fixed inset-x-4 top-[30%] z-50 mx-auto max-w-sm rounded-xl border bg-background p-6 shadow-2xl sm:inset-x-auto sm:w-[400px]">
             <h3 className="text-lg font-semibold">Disconnect Account</h3>
             <p className="text-sm text-muted-foreground mt-2">
-              Are you sure you want to disconnect <strong>{platformLabel(deleteTarget.platform)}</strong> account{" "}
-              <code className="text-xs bg-muted px-1.5 py-0.5 rounded">{deleteTarget.accountId}</code>?
-              This will remove all stored tokens.
+              Are you sure you want to disconnect{" "}
+              <strong>{platformLabel(deleteTarget.platform)}</strong> account{" "}
+              <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                {deleteTarget.accountId}
+              </code>
+              ? This will remove all stored tokens.
             </p>
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setDeleteTarget(null)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+                Cancel
+              </Button>
               <Button
                 variant="destructive"
                 onClick={handleDelete}

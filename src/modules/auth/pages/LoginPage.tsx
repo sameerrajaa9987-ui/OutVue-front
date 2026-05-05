@@ -118,7 +118,10 @@ export function LoginPage() {
 
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link to="/register" className="font-medium text-primary hover:underline">
+          <Link
+            to="/register"
+            className="font-medium text-primary hover:underline"
+          >
             Start free trial
           </Link>
         </p>

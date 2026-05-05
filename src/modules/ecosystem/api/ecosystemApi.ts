@@ -54,7 +54,10 @@ export type ListParams = {
 };
 
 export async function getEcosystemEntries(params: ListParams = {}) {
-  const res = await http.get<{ data: EcosystemEntry[]; meta: PaginationMeta }>("/ecosystem", { params });
+  const res = await http.get<{ data: EcosystemEntry[]; meta: PaginationMeta }>(
+    "/ecosystem",
+    { params },
+  );
   return { items: res.data.data, meta: res.data.meta! };
 }
 
@@ -63,13 +66,21 @@ export async function getEcosystemSummary() {
   return res.data.data;
 }
 
-export async function createEcosystemEntry(data: Omit<EcosystemEntry, "id" | "createdAt">) {
+export async function createEcosystemEntry(
+  data: Omit<EcosystemEntry, "id" | "createdAt">,
+) {
   const res = await http.post<{ data: EcosystemEntry }>("/ecosystem", data);
   return res.data.data;
 }
 
-export async function updateEcosystemEntry(id: string, data: Partial<EcosystemEntry>) {
-  const res = await http.put<{ data: EcosystemEntry }>(`/ecosystem/${id}`, data);
+export async function updateEcosystemEntry(
+  id: string,
+  data: Partial<EcosystemEntry>,
+) {
+  const res = await http.put<{ data: EcosystemEntry }>(
+    `/ecosystem/${id}`,
+    data,
+  );
   return res.data.data;
 }
 

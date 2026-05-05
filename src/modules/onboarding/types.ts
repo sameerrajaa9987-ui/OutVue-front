@@ -56,7 +56,10 @@ export const OBJECTIVES = [
   { value: "improve-budget-allocation", label: "Improve budget allocation" },
   { value: "track-bd-activity", label: "Track BD activity & ROI" },
   { value: "measure-event-roi", label: "Measure event ROI" },
-  { value: "identify-underperforming-channels", label: "Find underperforming channels" },
+  {
+    value: "identify-underperforming-channels",
+    label: "Find underperforming channels",
+  },
   { value: "reduce-cpl", label: "Reduce cost-per-lead" },
   { value: "increase-conversion-rate", label: "Increase conversion rate" },
   { value: "benchmark-against-industry", label: "Benchmark against industry" },

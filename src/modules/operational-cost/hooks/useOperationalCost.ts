@@ -20,7 +20,8 @@ export function useOperationalCostList(
 export function useCreateOperationalCost() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateOperationalCostPayload) => operationalCostApi.create(data),
+    mutationFn: (data: CreateOperationalCostPayload) =>
+      operationalCostApi.create(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }
@@ -28,8 +29,13 @@ export function useCreateOperationalCost() {
 export function useUpdateOperationalCost() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateOperationalCostPayload }) =>
-      operationalCostApi.update(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateOperationalCostPayload;
+    }) => operationalCostApi.update(id, data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }
@@ -45,7 +51,8 @@ export function useDeleteOperationalCost() {
 export function useBulkCreateOperationalCost() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateOperationalCostPayload[]) => operationalCostApi.bulkCreate(data),
+    mutationFn: (data: CreateOperationalCostPayload[]) =>
+      operationalCostApi.bulkCreate(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }

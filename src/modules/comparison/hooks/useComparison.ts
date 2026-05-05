@@ -11,7 +11,12 @@ export function useComparableItems(entityType: EntityType) {
 
 export function useCompare() {
   return useMutation({
-    mutationFn: ({ entityType, ids }: { entityType: EntityType; ids: string[] }) =>
-      comparisonApi.compare(entityType, ids),
+    mutationFn: ({
+      entityType,
+      ids,
+    }: {
+      entityType: EntityType;
+      ids: string[];
+    }) => comparisonApi.compare(entityType, ids),
   });
 }

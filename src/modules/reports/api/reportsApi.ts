@@ -11,7 +11,11 @@ export async function downloadCsv(params?: ReportParams) {
     params,
     responseType: "blob",
   });
-  triggerDownload(res.data as Blob, `outvue-report-${Date.now()}.csv`, "text/csv");
+  triggerDownload(
+    res.data as Blob,
+    `outvue-report-${Date.now()}.csv`,
+    "text/csv",
+  );
 }
 
 export async function downloadPdf(params?: ReportParams) {
@@ -19,7 +23,11 @@ export async function downloadPdf(params?: ReportParams) {
     params,
     responseType: "blob",
   });
-  triggerDownload(res.data as Blob, `outvue-report-${Date.now()}.pdf`, "application/pdf");
+  triggerDownload(
+    res.data as Blob,
+    `outvue-report-${Date.now()}.pdf`,
+    "application/pdf",
+  );
 }
 
 function triggerDownload(blob: Blob, filename: string, type: string) {

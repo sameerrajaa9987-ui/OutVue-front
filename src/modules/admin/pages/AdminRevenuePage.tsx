@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import {
   BarChart,
   Bar,
@@ -25,11 +24,22 @@ import {
 import { useRevenueSummary } from "../hooks";
 
 const fmt = (pence: number) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(pence / 100);
+  new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format(pence / 100);
 const fmtNum = (n: number) => new Intl.NumberFormat("en-GB").format(n);
 const pct = (n: number) => `${n.toFixed(1)}%`;
 
-const COLORS = ["#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444", "#06b6d4"];
+const COLORS = [
+  "#10b981",
+  "#3b82f6",
+  "#8b5cf6",
+  "#f59e0b",
+  "#ef4444",
+  "#06b6d4",
+];
 
 const STATUS_COLORS: Record<string, string> = {
   trial: "#3b82f6",
@@ -45,17 +55,28 @@ export function AdminRevenuePage() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div><h1 className="text-2xl font-bold tracking-tight">Admin: Revenue</h1></div>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Admin: Revenue</h1>
+        </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-28" />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-28" />
+          ))}
         </div>
       </div>
     );
   }
 
   const s = summary || {
-    totalUsers: 0, mrr: 0, arr: 0, activeSubscriptions: 0, churnRate: 0,
-    ltv: 0, avgRevenuePerAccount: 0, revenueByTier: [], statusBreakdown: [],
+    totalUsers: 0,
+    mrr: 0,
+    arr: 0,
+    activeSubscriptions: 0,
+    churnRate: 0,
+    ltv: 0,
+    avgRevenuePerAccount: 0,
+    revenueByTier: [],
+    statusBreakdown: [],
     pilotConversion: { totalPilots: 0, convertedPilots: 0, conversionRate: 0 },
   };
 
@@ -74,7 +95,9 @@ export function AdminRevenuePage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Admin: Revenue</h1>
-        <p className="text-muted-foreground mt-1">Platform revenue metrics and subscription analytics.</p>
+        <p className="text-muted-foreground mt-1">
+          Platform revenue metrics and subscription analytics.
+        </p>
       </div>
 
       {/* KPI Cards */}
@@ -147,14 +170,25 @@ export function AdminRevenuePage() {
           </CardHeader>
           <CardContent>
             {tierChartData.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-8 text-center">No subscription data yet</p>
+              <p className="text-sm text-muted-foreground py-8 text-center">
+                No subscription data yet
+              </p>
             ) : (
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={tierChartData}>
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-border"
+                  />
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} />
-                  <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid var(--border)", background: "var(--background)" }} />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "8px",
+                      border: "1px solid var(--border)",
+                      background: "var(--background)",
+                    }}
+                  />
                   <Legend />
                   <Bar dataKey="Users" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="Revenue" fill="#10b981" radius={[4, 4, 0, 0]} />
@@ -174,13 +208,31 @@ export function AdminRevenuePage() {
           </CardHeader>
           <CardContent>
             {statusPieData.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-8 text-center">No subscription data yet</p>
+              <p className="text-sm text-muted-foreground py-8 text-center">
+                No subscription data yet
+              </p>
             ) : (
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
-                  <Pie data={statusPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                  <Pie
+                    data={statusPieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={({ name, percent }) =>
+                      `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
+                    }
+                  >
                     {statusPieData.map((entry, i) => (
-                      <Cell key={i} fill={STATUS_COLORS[entry.name.toLowerCase()] || COLORS[i % COLORS.length]} />
+                      <Cell
+                        key={i}
+                        fill={
+                          STATUS_COLORS[entry.name.toLowerCase()] ||
+                          COLORS[i % COLORS.length]
+                        }
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -204,9 +256,12 @@ export function AdminRevenuePage() {
           <CardContent className="p-5 text-center">
             <p className="text-sm text-muted-foreground">Pilot Conversions</p>
             <p className="text-3xl font-bold mt-1">
-              {s.pilotConversion.convertedPilots}/{s.pilotConversion.totalPilots}
+              {s.pilotConversion.convertedPilots}/
+              {s.pilotConversion.totalPilots}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">{pct(s.pilotConversion.conversionRate)} conversion rate</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {pct(s.pilotConversion.conversionRate)} conversion rate
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -214,7 +269,10 @@ export function AdminRevenuePage() {
             <p className="text-sm text-muted-foreground">Revenue by Tier</p>
             <div className="mt-2 space-y-1">
               {s.revenueByTier.map((t) => (
-                <div key={t.tier} className="flex items-center justify-between text-sm">
+                <div
+                  key={t.tier}
+                  className="flex items-center justify-between text-sm"
+                >
                   <span className="capitalize">{t.name}</span>
                   <span className="font-medium">{t.count} users</span>
                 </div>

@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { ChevronRight, TrendingUp, PanelLeftClose, PanelLeft } from "lucide-react";
+import {
+  ChevronRight,
+  TrendingUp,
+  PanelLeftClose,
+  PanelLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/app/hooks";
 import { MENU, type MenuItem } from "./menu";
@@ -83,7 +88,9 @@ export function Sidebar() {
                     )}
                     title={collapsed ? section.label : undefined}
                   >
-                    {section.icon && <section.icon className="h-4 w-4 shrink-0" />}
+                    {section.icon && (
+                      <section.icon className="h-4 w-4 shrink-0" />
+                    )}
                     {!collapsed && <span>{section.label}</span>}
                   </div>
                 )}
@@ -93,12 +100,15 @@ export function Sidebar() {
 
           if (hasChildren) {
             const sectionActive = isItemActive(section);
-            const isOpen =
-              openSections[section.label] ?? sectionActive;
+            const isOpen = openSections[section.label] ?? sectionActive;
 
             if (collapsed) {
               return (
-                <div key={section.label} className="py-0.5" title={section.label}>
+                <div
+                  key={section.label}
+                  className="py-0.5"
+                  title={section.label}
+                >
                   {section.icon && (
                     <div
                       className={cn(
@@ -132,7 +142,9 @@ export function Sidebar() {
                     }))
                   }
                 >
-                  {section.icon && <section.icon className="h-4 w-4 shrink-0" />}
+                  {section.icon && (
+                    <section.icon className="h-4 w-4 shrink-0" />
+                  )}
                   <span className="flex-1 text-left">{section.label}</span>
                   <ChevronRight
                     className={cn(
@@ -144,8 +156,8 @@ export function Sidebar() {
 
                 {isOpen && (
                   <div className="ml-4 mt-0.5 space-y-0.5 border-l border-sidebar-border pl-2.5">
-                    {section.children!
-                      .filter((c) => c.to)
+                    {section
+                      .children!.filter((c) => c.to)
                       .map((child) => (
                         <NavLink key={child.label} to={child.to!} end>
                           {() => (

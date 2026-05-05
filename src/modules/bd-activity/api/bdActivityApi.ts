@@ -42,7 +42,10 @@ export async function getById(id: string) {
 }
 
 export async function update(id: string, data: UpdateBdActivityPayload) {
-  const res = await http.patch<{ data: BdActivity }>(`/bd-activity/${id}`, data);
+  const res = await http.patch<{ data: BdActivity }>(
+    `/bd-activity/${id}`,
+    data,
+  );
   return res.data.data;
 }
 

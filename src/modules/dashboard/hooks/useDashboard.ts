@@ -12,10 +12,7 @@ export function useDashboardSummary(params?: {
   });
 }
 
-export function useTrends(params?: {
-  startDate?: string;
-  endDate?: string;
-}) {
+export function useTrends(params?: { startDate?: string; endDate?: string }) {
   return useQuery({
     queryKey: ["dashboard-trends", params],
     queryFn: () => dashboardApi.getTrends(params),

@@ -1,1 +1,6 @@
-export { useProfile, useUpdateProfile, useChangePassword, useGdprExport } from "./useSettings";
+export {
+  useProfile,
+  useUpdateProfile,
+  useChangePassword,
+  useGdprExport,
+} from "./useSettings";

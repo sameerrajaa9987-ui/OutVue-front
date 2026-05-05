@@ -79,12 +79,19 @@ type SummaryParams = {
 };
 
 export async function getSummary(params?: SummaryParams) {
-  const res = await http.get<{ data: DashboardSummary }>("/dashboard/summary", { params });
+  const res = await http.get<{ data: DashboardSummary }>("/dashboard/summary", {
+    params,
+  });
   return res.data.data;
 }
 
-export async function getTrends(params?: { startDate?: string; endDate?: string }) {
-  const res = await http.get<{ data: TrendPoint[] }>("/dashboard/trends", { params });
+export async function getTrends(params?: {
+  startDate?: string;
+  endDate?: string;
+}) {
+  const res = await http.get<{ data: TrendPoint[] }>("/dashboard/trends", {
+    params,
+  });
   return res.data.data;
 }
 
@@ -94,6 +101,8 @@ export async function getBdSummary() {
 }
 
 export async function getCostBreakdown() {
-  const res = await http.get<{ data: CostBreakdown }>("/dashboard/cost-breakdown");
+  const res = await http.get<{ data: CostBreakdown }>(
+    "/dashboard/cost-breakdown",
+  );
   return res.data.data;
 }

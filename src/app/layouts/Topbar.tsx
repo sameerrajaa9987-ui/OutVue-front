@@ -30,7 +30,10 @@ export function Topbar() {
 
         <div className="flex items-center gap-3">
           {user?.subscriptionStatus && (
-            <Badge variant={statusVariant} className="hidden sm:flex capitalize">
+            <Badge
+              variant={statusVariant}
+              className="hidden sm:flex capitalize"
+            >
               {user.subscriptionStatus}
             </Badge>
           )}

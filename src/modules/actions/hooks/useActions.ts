@@ -20,8 +20,13 @@ export function useCreateAction() {
 export function useUpdateAction() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Parameters<typeof actionsApi.updateAction>[1] }) =>
-      actionsApi.updateAction(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Parameters<typeof actionsApi.updateAction>[1];
+    }) => actionsApi.updateAction(id, data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["actions"] }),
   });
 }

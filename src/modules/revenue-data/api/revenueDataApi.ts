@@ -41,7 +41,10 @@ export async function getById(id: string) {
 }
 
 export async function update(id: string, data: UpdateRevenueDataPayload) {
-  const res = await http.patch<{ data: RevenueData }>(`/revenue-data/${id}`, data);
+  const res = await http.patch<{ data: RevenueData }>(
+    `/revenue-data/${id}`,
+    data,
+  );
   return res.data.data;
 }
 

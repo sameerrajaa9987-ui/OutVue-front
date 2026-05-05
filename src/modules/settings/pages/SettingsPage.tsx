@@ -16,7 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useProfile, useUpdateProfile, useChangePassword, useGdprExport } from "../hooks";
+import {
+  useProfile,
+  useUpdateProfile,
+  useChangePassword,
+  useGdprExport,
+} from "../hooks";
 
 const TABS = [
   { id: "profile", label: "Profile", icon: User },
@@ -116,9 +121,7 @@ function ProfileTab() {
 
       <div className="pt-1">
         <Button type="submit" disabled={!isDirty || isPending}>
-          {isPending ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : null}
+          {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           Save Changes
         </Button>
       </div>
@@ -130,10 +133,7 @@ function ProfileTab() {
 const passwordSchema = z
   .object({
     currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z
-      .string()
-      .min(8, "Must be at least 8 characters")
-      .max(128),
+    newPassword: z.string().min(8, "Must be at least 8 characters").max(128),
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((d) => d.newPassword === d.confirmPassword, {
@@ -154,7 +154,10 @@ function SecurityTab() {
 
   const onSubmit = (values: PasswordForm) => {
     mutate(
-      { currentPassword: values.currentPassword, newPassword: values.newPassword },
+      {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      },
       { onSuccess: () => reset() },
     );
   };
@@ -170,7 +173,9 @@ function SecurityTab() {
           {...register("currentPassword")}
         />
         {errors.currentPassword && (
-          <p className="text-xs text-red-500">{errors.currentPassword.message}</p>
+          <p className="text-xs text-red-500">
+            {errors.currentPassword.message}
+          </p>
         )}
       </div>
 
@@ -196,7 +201,9 @@ function SecurityTab() {
           {...register("confirmPassword")}
         />
         {errors.confirmPassword && (
-          <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>
+          <p className="text-xs text-red-500">
+            {errors.confirmPassword.message}
+          </p>
         )}
       </div>
 

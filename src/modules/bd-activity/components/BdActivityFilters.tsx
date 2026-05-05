@@ -23,24 +23,32 @@ export function BdActivityFilters({ filters, onChange }: Props) {
       <Select
         className="w-[180px]"
         value={filters.type ?? ""}
-        onChange={(e) => onChange({ ...filters, type: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, type: e.target.value || undefined })
+        }
       >
         <option value="">All Types</option>
         {BD_TYPES.map((t) => (
-          <option key={t.value} value={t.value}>{t.label}</option>
+          <option key={t.value} value={t.value}>
+            {t.label}
+          </option>
         ))}
       </Select>
       <Input
         type="date"
         className="w-[160px]"
         value={filters.startDate ?? ""}
-        onChange={(e) => onChange({ ...filters, startDate: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, startDate: e.target.value || undefined })
+        }
       />
       <Input
         type="date"
         className="w-[160px]"
         value={filters.endDate ?? ""}
-        onChange={(e) => onChange({ ...filters, endDate: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, endDate: e.target.value || undefined })
+        }
       />
     </div>
   );

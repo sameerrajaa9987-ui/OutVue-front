@@ -28,8 +28,13 @@ export function useCreateRevenueData() {
 export function useUpdateRevenueData() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateRevenueDataPayload }) =>
-      revenueDataApi.update(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateRevenueDataPayload;
+    }) => revenueDataApi.update(id, data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }
@@ -45,7 +50,8 @@ export function useDeleteRevenueData() {
 export function useBulkCreateRevenueData() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateRevenueDataPayload[]) => revenueDataApi.bulkCreate(data),
+    mutationFn: (data: CreateRevenueDataPayload[]) =>
+      revenueDataApi.bulkCreate(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: BASE_KEY }),
   });
 }

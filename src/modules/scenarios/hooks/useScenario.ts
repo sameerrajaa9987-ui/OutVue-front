@@ -4,6 +4,7 @@ import type { Adjustment } from "../api/scenarioApi";
 
 export function useRunScenario() {
   return useMutation({
-    mutationFn: (adjustments: Adjustment[]) => scenarioApi.runScenario(adjustments),
+    mutationFn: (adjustments: Adjustment[]) =>
+      scenarioApi.runScenario(adjustments),
   });
 }

@@ -40,7 +40,9 @@ export async function triggerSyncAll() {
 }
 
 export async function triggerSyncOne(adAccountId: string) {
-  const res = await http.post<{ data: SyncResult }>(`/sync/trigger/${adAccountId}`);
+  const res = await http.post<{ data: SyncResult }>(
+    `/sync/trigger/${adAccountId}`,
+  );
   return res.data.data;
 }
 
@@ -55,9 +57,9 @@ export async function getSyncLogs(params?: {
   page?: number;
   limit?: number;
 }) {
-  const res = await http.get<{ data: SyncLog[]; meta: Record<string, unknown> }>(
-    "/sync/logs",
-    { params },
-  );
+  const res = await http.get<{
+    data: SyncLog[];
+    meta: Record<string, unknown>;
+  }>("/sync/logs", { params });
   return res.data;
 }

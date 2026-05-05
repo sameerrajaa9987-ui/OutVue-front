@@ -22,6 +22,8 @@ export async function getRecommendations() {
 }
 
 export async function getRecommendationSummary() {
-  const res = await http.get<{ data: RecommendationSummary }>("/recommendations/summary");
+  const res = await http.get<{ data: RecommendationSummary }>(
+    "/recommendations/summary",
+  );
   return res.data.data;
 }

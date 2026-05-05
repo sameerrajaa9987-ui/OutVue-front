@@ -1,7 +1,10 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { OPERATIONAL_TYPES, type OperationalCostFilters as Filters } from "../types";
+import {
+  OPERATIONAL_TYPES,
+  type OperationalCostFilters as Filters,
+} from "../types";
 
 type Props = {
   filters: Filters;
@@ -23,18 +26,24 @@ export function OperationalCostFilters({ filters, onChange }: Props) {
       <Select
         className="w-[180px]"
         value={filters.type ?? ""}
-        onChange={(e) => onChange({ ...filters, type: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, type: e.target.value || undefined })
+        }
       >
         <option value="">All Types</option>
         {OPERATIONAL_TYPES.map((t) => (
-          <option key={t.value} value={t.value}>{t.label}</option>
+          <option key={t.value} value={t.value}>
+            {t.label}
+          </option>
         ))}
       </Select>
       <Input
         className="w-[160px]"
         placeholder="Period (e.g. 2026-01)"
         value={filters.period ?? ""}
-        onChange={(e) => onChange({ ...filters, period: e.target.value || undefined })}
+        onChange={(e) =>
+          onChange({ ...filters, period: e.target.value || undefined })
+        }
       />
     </div>
   );

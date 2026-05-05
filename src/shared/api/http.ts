@@ -103,10 +103,7 @@ http.interceptors.response.use(
 );
 
 function redirectToLogin() {
-  if (
-    typeof window !== "undefined" &&
-    window.location.pathname !== "/login"
-  ) {
+  if (typeof window !== "undefined" && window.location.pathname !== "/login") {
     window.location.assign("/login");
   }
 }

@@ -9,7 +9,7 @@ import {
   ShieldAlert,
   Zap,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -63,7 +63,12 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
     <Card className={cn("border", config.border)}>
       <CardContent className="p-5">
         <div className="flex items-start gap-4">
-          <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg", config.bg)}>
+          <div
+            className={cn(
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+              config.bg,
+            )}
+          >
             <TagIcon className={cn("h-5 w-5", config.color)} />
           </div>
           <div className="min-w-0 flex-1 space-y-2">
@@ -72,7 +77,8 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
               <span
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
-                  config.bg, config.color,
+                  config.bg,
+                  config.color,
                 )}
               >
                 <span className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
@@ -81,15 +87,21 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
             </div>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="capitalize">{rec.entityType.replace("-", " ")}</span>
+              <span className="capitalize">
+                {rec.entityType.replace("-", " ")}
+              </span>
               <span>&middot;</span>
               <span className="font-medium capitalize">{rec.entityName}</span>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">{rec.reasoning}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {rec.reasoning}
+            </p>
 
             <div className="rounded-lg bg-muted/40 p-3">
-              <p className="text-xs font-medium text-muted-foreground mb-1">Suggested Action</p>
+              <p className="text-xs font-medium text-muted-foreground mb-1">
+                Suggested Action
+              </p>
               <p className="text-sm">{rec.suggestedAction}</p>
             </div>
           </div>
@@ -104,7 +116,8 @@ export function InsightsPage() {
   const { data: recs, isLoading } = useRecommendations();
   const { data: summary } = useRecommendationSummary();
 
-  const filtered = recs?.filter((r) => filter === "all" || r.priority === filter) ?? [];
+  const filtered =
+    recs?.filter((r) => filter === "all" || r.priority === filter) ?? [];
 
   return (
     <div className="space-y-6">
@@ -126,19 +139,27 @@ export function InsightsPage() {
         </Card>
         <Card className="border-red-500/20">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-red-600">{summary?.high ?? 0}</p>
+            <p className="text-3xl font-bold text-red-600">
+              {summary?.high ?? 0}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">High Priority</p>
           </CardContent>
         </Card>
         <Card className="border-amber-500/20">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-amber-600">{summary?.medium ?? 0}</p>
-            <p className="text-xs text-muted-foreground mt-1">Medium Priority</p>
+            <p className="text-3xl font-bold text-amber-600">
+              {summary?.medium ?? 0}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Medium Priority
+            </p>
           </CardContent>
         </Card>
         <Card className="border-blue-500/20">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-blue-600">{summary?.low ?? 0}</p>
+            <p className="text-3xl font-bold text-blue-600">
+              {summary?.low ?? 0}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">Low Priority</p>
           </CardContent>
         </Card>
@@ -154,9 +175,17 @@ export function InsightsPage() {
             onClick={() => setFilter(f)}
             className="gap-1.5"
           >
-            {f !== "all" && <span className={cn("h-2 w-2 rounded-full", PRIORITY_CONFIG[f].dot)} />}
+            {f !== "all" && (
+              <span
+                className={cn("h-2 w-2 rounded-full", PRIORITY_CONFIG[f].dot)}
+              />
+            )}
             {f === "all" ? "All" : PRIORITY_CONFIG[f].label}
-            {f === "all" && <span className="ml-1 text-muted-foreground">({recs?.length ?? 0})</span>}
+            {f === "all" && (
+              <span className="ml-1 text-muted-foreground">
+                ({recs?.length ?? 0})
+              </span>
+            )}
             {f !== "all" && (
               <span className="ml-1 text-muted-foreground">
                 ({recs?.filter((r) => r.priority === f).length ?? 0})
@@ -169,14 +198,18 @@ export function InsightsPage() {
       {/* Recommendations */}
       {isLoading ? (
         <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-40" />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-40" />
+          ))}
         </div>
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <Sparkles className="h-12 w-12 text-muted-foreground/40 mb-4" />
             <h3 className="text-lg font-semibold">
-              {recs && recs.length > 0 ? "No matching insights" : "No insights yet"}
+              {recs && recs.length > 0
+                ? "No matching insights"
+                : "No insights yet"}
             </h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-sm">
               {recs && recs.length > 0
@@ -188,7 +221,10 @@ export function InsightsPage() {
       ) : (
         <div className="space-y-4">
           {filtered.map((rec, i) => (
-            <RecommendationCard key={`${rec.tag}-${rec.entityName}-${i}`} rec={rec} />
+            <RecommendationCard
+              key={`${rec.tag}-${rec.entityName}-${i}`}
+              rec={rec}
+            />
           ))}
         </div>
       )}

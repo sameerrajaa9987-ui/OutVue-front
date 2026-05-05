@@ -7,7 +7,9 @@ export function NotFoundPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-background text-center px-4">
       <div className="flex items-center gap-2 mb-8">
         <BarChart3 className="h-6 w-6 text-primary" />
-        <span className="font-semibold text-lg tracking-tight">Grospective™</span>
+        <span className="font-semibold text-lg tracking-tight">
+          Grospective™
+        </span>
       </div>
 
       <p className="text-8xl font-bold text-primary/20 leading-none select-none">

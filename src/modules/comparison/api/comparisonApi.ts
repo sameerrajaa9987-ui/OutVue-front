@@ -47,11 +47,16 @@ export type ComparisonResult = {
 };
 
 export async function getComparableItems(entityType: EntityType) {
-  const res = await http.get<{ data: ComparableItem[] }>(`/compare/items/${entityType}`);
+  const res = await http.get<{ data: ComparableItem[] }>(
+    `/compare/items/${entityType}`,
+  );
   return res.data.data;
 }
 
 export async function compare(entityType: EntityType, ids: string[]) {
-  const res = await http.post<{ data: ComparisonResult }>("/compare", { entityType, ids });
+  const res = await http.post<{ data: ComparisonResult }>("/compare", {
+    entityType,
+    ids,
+  });
   return res.data.data;
 }

@@ -12,12 +12,27 @@ export type ActionItem = {
   createdAt: string;
 };
 
-type PaginationMeta = { total: number; totalPages: number; page: number; limit: number; hasNextPage: boolean; hasPrevPage: boolean };
+type PaginationMeta = {
+  total: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+};
 
-export type ActionListParams = { search?: string; status?: string; page?: number; limit?: number };
+export type ActionListParams = {
+  search?: string;
+  status?: string;
+  page?: number;
+  limit?: number;
+};
 
 export async function getActions(params: ActionListParams = {}) {
-  const res = await http.get<{ data: ActionItem[]; meta: PaginationMeta }>("/actions", { params });
+  const res = await http.get<{ data: ActionItem[]; meta: PaginationMeta }>(
+    "/actions",
+    { params },
+  );
   return { items: res.data.data, meta: res.data.meta! };
 }
 

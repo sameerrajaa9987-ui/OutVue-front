@@ -30,8 +30,13 @@ export function useCreateEcosystem() {
 export function useUpdateEcosystem() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Parameters<typeof ecosystemApi.updateEcosystemEntry>[1] }) =>
-      ecosystemApi.updateEcosystemEntry(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Parameters<typeof ecosystemApi.updateEcosystemEntry>[1];
+    }) => ecosystemApi.updateEcosystemEntry(id, data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["ecosystem"] });
       qc.invalidateQueries({ queryKey: ["ecosystem-summary"] });

@@ -12,7 +12,11 @@ export async function list() {
 
 export async function connect(data: ConnectAdAccountPayload) {
   const res = await http.post<{
-    data: { account: AdAccount; tokenValid: boolean; validationMessage?: string };
+    data: {
+      account: AdAccount;
+      tokenValid: boolean;
+      validationMessage?: string;
+    };
   }>("/accounts/connect", data);
   return res.data.data;
 }

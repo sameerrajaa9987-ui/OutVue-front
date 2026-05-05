@@ -15,7 +15,8 @@ export type CreateOperationalCostPayload = Omit<
   "id" | "userId" | "createdAt" | "updatedAt"
 >;
 
-export type UpdateOperationalCostPayload = Partial<CreateOperationalCostPayload>;
+export type UpdateOperationalCostPayload =
+  Partial<CreateOperationalCostPayload>;
 
 export const OPERATIONAL_TYPES = [
   { value: "team", label: "Team" },
