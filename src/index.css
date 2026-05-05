@@ -1,0 +1,108 @@
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+}
+
+@layer base {
+  :root {
+    /* OUTVUE brand – emerald/teal growth palette */
+    --background: oklch(0.98 0.004 155);
+    --foreground: oklch(0.2 0.02 160);
+    --card: oklch(0.995 0.002 155);
+    --card-foreground: oklch(0.2 0.02 160);
+    --popover: oklch(0.995 0.002 155);
+    --popover-foreground: oklch(0.2 0.02 160);
+    --primary: oklch(0.45 0.14 160);
+    --primary-foreground: oklch(0.98 0.005 155);
+    --secondary: oklch(0.94 0.01 155);
+    --secondary-foreground: oklch(0.25 0.02 160);
+    --muted: oklch(0.955 0.008 155);
+    --muted-foreground: oklch(0.48 0.015 160);
+    --accent: oklch(0.93 0.012 155);
+    --accent-foreground: oklch(0.28 0.02 160);
+    --destructive: oklch(0.577 0.245 27);
+    --destructive-foreground: oklch(0.985 0 0);
+    --success: oklch(0.52 0.16 145);
+    --success-foreground: oklch(0.98 0.005 145);
+    --warning: oklch(0.75 0.16 75);
+    --warning-foreground: oklch(0.25 0.04 75);
+    --border: oklch(0.9 0.008 155);
+    --input: oklch(0.92 0.008 155);
+    --ring: oklch(0.5 0.1 160);
+    --radius: 0.625rem;
+
+    --sidebar: oklch(0.22 0.035 160);
+    --sidebar-foreground: oklch(0.95 0.006 155);
+    --sidebar-primary: oklch(0.55 0.12 160);
+    --sidebar-primary-foreground: oklch(0.15 0.01 160);
+    --sidebar-accent: oklch(0.28 0.03 160);
+    --sidebar-accent-foreground: oklch(0.96 0.004 155);
+    --sidebar-border: oklch(0.32 0.02 160);
+    --sidebar-ring: oklch(0.55 0.12 160);
+  }
+  .dark {
+    --background: oklch(0.14 0.012 160);
+    --foreground: oklch(0.96 0.005 155);
+    --card: oklch(0.18 0.012 160);
+    --card-foreground: oklch(0.96 0.005 155);
+    --popover: oklch(0.18 0.012 160);
+    --popover-foreground: oklch(0.96 0.005 155);
+    --primary: oklch(0.65 0.15 160);
+    --primary-foreground: oklch(0.14 0.012 160);
+    --secondary: oklch(0.24 0.014 160);
+    --secondary-foreground: oklch(0.96 0.005 155);
+    --muted: oklch(0.22 0.012 160);
+    /* Brighter than before so placeholders & secondary body text pass contrast on dark bg */
+    --muted-foreground: oklch(0.82 0.012 155);
+    --accent: oklch(0.24 0.014 160);
+    --accent-foreground: oklch(0.96 0.005 155);
+    --destructive: oklch(0.704 0.191 22);
+    --destructive-foreground: oklch(0.985 0 0);
+    --success: oklch(0.62 0.16 145);
+    --success-foreground: oklch(0.14 0.01 145);
+    --warning: oklch(0.78 0.14 75);
+    --warning-foreground: oklch(0.18 0.04 75);
+    --border: oklch(0.38 0.014 160 / 65%);
+    --input: oklch(0.34 0.014 160 / 85%);
+    --ring: oklch(0.55 0.08 160);
+
+    --sidebar: oklch(0.12 0.015 160);
+    --sidebar-foreground: oklch(0.95 0.005 155);
+    --sidebar-primary: oklch(0.55 0.18 160);
+    --sidebar-primary-foreground: oklch(0.98 0.003 155);
+    --sidebar-accent: oklch(0.2 0.014 160);
+    --sidebar-accent-foreground: oklch(0.96 0.004 155);
+    --sidebar-border: oklch(0.24 0.012 160 / 50%);
+    --sidebar-ring: oklch(0.55 0.08 160);
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Native <select> dropdown: avoid light popup + light page text (white-on-white) on Windows/Chrome */
+  .dark select option {
+    background-color: var(--popover);
+    color: var(--popover-foreground);
+  }
+}
