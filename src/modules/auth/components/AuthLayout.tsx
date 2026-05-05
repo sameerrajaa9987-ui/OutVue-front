@@ -5,23 +5,23 @@ export function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-full">
       {/* Left panel – brand */}
-      <div className="hidden lg:flex lg:w-[480px] xl:w-[540px] flex-col justify-between bg-gradient-to-br from-primary/95 via-primary to-primary/80 p-10 text-white">
+      <div className="hidden lg:flex lg:w-[480px] xl:w-[540px] flex-col justify-between bg-sidebar p-10 text-sidebar-foreground">
         <div>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
-              <TrendingUp className="h-6 w-6 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sidebar-primary/25 backdrop-blur">
+              <TrendingUp className="h-6 w-6 text-sidebar-primary" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-white">
+            <span className="text-xl font-bold tracking-tight">
               OUTVUE
             </span>
           </div>
-          <p className="mt-1 text-sm font-medium text-white/85">
+          <p className="mt-1 text-sm font-medium text-sidebar-foreground/80">
             Growth Intelligence Platform
           </p>
         </div>
 
         <div className="space-y-6">
-          <blockquote className="border-l-2 border-white/40 pl-4 text-lg leading-relaxed italic text-white/95">
+          <blockquote className="border-l-2 border-sidebar-foreground/35 pl-4 text-lg leading-relaxed italic text-sidebar-foreground/95">
             "Understand your true growth cost, marketing ROI, and budget
             allocation — all in one place."
           </blockquote>
@@ -35,12 +35,12 @@ export function AuthLayout({ children }: { children: ReactNode }) {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-lg border border-white/20 bg-white/15 p-3 backdrop-blur"
+                className="rounded-lg border border-sidebar-border bg-sidebar-accent/60 p-3 backdrop-blur"
               >
-                <div className="text-2xl font-bold text-white">
+                <div className="text-2xl font-bold">
                   {stat.value}
                 </div>
-                <div className="text-xs font-medium text-white/85">
+                <div className="text-xs font-medium text-sidebar-foreground/80">
                   {stat.label}
                 </div>
               </div>
@@ -48,7 +48,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <p className="text-xs text-white/70">
+        <p className="text-xs text-sidebar-foreground/65">
           &copy; {new Date().getFullYear()} OUTVUE&trade;. All rights reserved.
         </p>
       </div>
