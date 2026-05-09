@@ -2,14 +2,16 @@ import {
   LayoutDashboard,
   TrendingUp,
   Megaphone,
-  Handshake,
-  Wallet,
   BarChart3,
   Brain,
   CreditCard,
   FileText,
   ShieldCheck,
   Settings,
+  ClipboardList,
+  CalendarDays,
+  Sparkles,
+  Network,
   type LucideIcon,
 } from "lucide-react";
 import type { Role } from "@/modules/auth/types";
@@ -36,6 +38,7 @@ export const MENU: MenuItem[] = [
       { label: "BD Activity", to: "/data/bd" },
       { label: "Operational Costs", to: "/data/operational" },
       { label: "Revenue & Conversions", to: "/data/revenue" },
+      { label: "Ecosystem Tracking", to: "/ecosystem" },
     ],
   },
   {
@@ -49,6 +52,7 @@ export const MENU: MenuItem[] = [
     children: [
       { label: "Trends", to: "/analytics/trends" },
       { label: "Comparison", to: "/analytics/compare" },
+      { label: "Budget Allocation", to: "/budget" },
     ],
   },
   {
@@ -57,9 +61,19 @@ export const MENU: MenuItem[] = [
     icon: Brain,
   },
   {
+    label: "Action Planning",
+    to: "/actions",
+    icon: ClipboardList,
+  },
+  {
+    label: "Monthly Review",
+    to: "/review",
+    icon: CalendarDays,
+  },
+  {
     label: "Scenario Modelling",
     to: "/scenarios",
-    icon: Handshake,
+    icon: Sparkles,
   },
   {
     label: "Billing",
@@ -87,10 +101,5 @@ export const MENU: MenuItem[] = [
       { label: "Business Profile", to: "/settings/profile" },
       { label: "Account", to: "/settings/account" },
     ],
-  },
-  {
-    label: "Budget",
-    to: "/budget",
-    icon: Wallet,
   },
 ];
