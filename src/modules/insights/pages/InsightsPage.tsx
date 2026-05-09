@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   Lightbulb,
   AlertTriangle,
@@ -112,6 +113,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
 }
 
 export function InsightsPage() {
+  usePageTitle("AI Insights");
   const [filter, setFilter] = useState<FilterPriority>("all");
   const { data: recs, isLoading } = useRecommendations();
   const { data: summary } = useRecommendationSummary();

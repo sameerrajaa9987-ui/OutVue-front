@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   Plus,
   Pencil,
@@ -37,6 +38,7 @@ function typeLabel(val: string) {
 }
 
 export function BdActivityPage() {
+  usePageTitle("BD Activity");
   const [filters, setFilters] = useState<Filters>({});
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);

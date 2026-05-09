@@ -63,7 +63,13 @@ export function OperationalCostDialog({
               allocation: defaultValues.allocation,
               period: defaultValues.period,
             }
-          : { type: "", name: "", monthlyCost: "" as unknown as number, allocation: 100, period: "" },
+          : {
+              type: "",
+              name: "",
+              monthlyCost: "" as unknown as number,
+              allocation: 100,
+              period: "",
+            },
       );
     }
   }, [open, defaultValues, reset]);

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   ClipboardList,
   Plus,
@@ -91,6 +92,7 @@ const EMPTY: FormData = {
 };
 
 export function ActionsPage() {
+  usePageTitle("Action Planning");
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
@@ -117,7 +119,8 @@ export function ActionsPage() {
   // Apply priority filter client-side
   const items = priorityFilter
     ? allItems.filter(
-        (a) => (a as ActionItem & { priority?: string }).priority === priorityFilter,
+        (a) =>
+          (a as ActionItem & { priority?: string }).priority === priorityFilter,
       )
     : allItems;
 
@@ -149,7 +152,8 @@ export function ActionsPage() {
       status: a.status,
       outcome: a.outcome,
       recommendationTag: a.recommendationTag || "",
-      priority: (a as ActionItem & { priority?: Priority }).priority || "medium",
+      priority:
+        (a as ActionItem & { priority?: Priority }).priority || "medium",
     });
     setShowForm(true);
   }
@@ -563,14 +567,11 @@ export function ActionsPage() {
             const Icon = cfg.icon;
             const overdue =
               a.status !== "completed" && new Date(a.dueDate) < new Date();
-            const priority = (a as ActionItem & { priority?: Priority })
-              .priority || "medium";
+            const priority =
+              (a as ActionItem & { priority?: Priority }).priority || "medium";
             const pCfg = PRIORITY_CONFIG[priority];
             return (
-              <Card
-                key={a.id}
-                className={cn(overdue && "border-red-500/30")}
-              >
+              <Card key={a.id} className={cn(overdue && "border-red-500/30")}>
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
                     <div
@@ -606,8 +607,7 @@ export function ActionsPage() {
                         <span
                           className={cn(overdue && "text-red-500 font-medium")}
                         >
-                          Due:{" "}
-                          {new Date(a.dueDate).toLocaleDateString("en-GB")}
+                          Due: {new Date(a.dueDate).toLocaleDateString("en-GB")}
                           {overdue && " (overdue)"}
                         </span>
                         <span className={cn("capitalize", cfg.color)}>

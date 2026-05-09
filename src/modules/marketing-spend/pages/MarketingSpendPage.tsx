@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   Plus,
   Pencil,
@@ -44,10 +45,7 @@ function platformLabel(val: string) {
   return MARKETING_PLATFORMS.find((p) => p.value === val)?.label ?? val;
 }
 
-const SOURCE_BADGES: Record<
-  string,
-  { label: string; className: string }
-> = {
+const SOURCE_BADGES: Record<string, { label: string; className: string }> = {
   manual: {
     label: "Manual",
     className: "bg-gray-100 text-gray-600 border-gray-200",
@@ -65,6 +63,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 };
 
 export function MarketingSpendPage() {
+  usePageTitle("Marketing Spend");
   const [filters, setFilters] = useState<Filters>({});
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -193,9 +192,7 @@ export function MarketingSpendPage() {
                     <th className="px-4 py-3 text-left font-medium">
                       Platform
                     </th>
-                    <th className="px-4 py-3 text-left font-medium">
-                      Source
-                    </th>
+                    <th className="px-4 py-3 text-left font-medium">Source</th>
                     <th className="px-4 py-3 text-right font-medium">Spend</th>
                     <th className="px-4 py-3 text-right font-medium">Leads</th>
                     <th className="px-4 py-3 text-right font-medium">CPL</th>
@@ -247,12 +244,8 @@ export function MarketingSpendPage() {
                               sourceBadge.className,
                             )}
                           >
-                            {isSynced && (
-                              <CloudDownload className="h-3 w-3" />
-                            )}
-                            {isSynced
-                              ? syncedPlatformLabel
-                              : sourceBadge.label}
+                            {isSynced && <CloudDownload className="h-3 w-3" />}
+                            {isSynced ? syncedPlatformLabel : sourceBadge.label}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
@@ -278,9 +271,7 @@ export function MarketingSpendPage() {
                                 title={`Synced from ${syncedPlatformLabel}. Edit in ${syncedPlatformLabel} Ads Manager.`}
                               >
                                 <Info className="h-3.5 w-3.5" />
-                                <span className="hidden sm:inline">
-                                  Synced
-                                </span>
+                                <span className="hidden sm:inline">Synced</span>
                               </span>
                             ) : (
                               <>

@@ -11,9 +11,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sidebar-primary/25 backdrop-blur">
               <TrendingUp className="h-6 w-6 text-sidebar-primary" />
             </div>
-            <span className="text-xl font-bold tracking-tight">
-              OUTVUE
-            </span>
+            <span className="text-xl font-bold tracking-tight">OUTVUE</span>
           </div>
           <p className="mt-1 text-sm font-medium text-sidebar-foreground/80">
             Growth Intelligence Platform
@@ -37,9 +35,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
                 key={stat.label}
                 className="rounded-lg border border-sidebar-border bg-sidebar-accent/60 p-3 backdrop-blur"
               >
-                <div className="text-2xl font-bold">
-                  {stat.value}
-                </div>
+                <div className="text-2xl font-bold">{stat.value}</div>
                 <div className="text-xs font-medium text-sidebar-foreground/80">
                   {stat.label}
                 </div>

@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import {
   TrendingUp,
   TrendingDown,
@@ -9,12 +10,23 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Plug,
+  Megaphone,
+  MousePointerClick,
+  AlertCircle,
+  Calendar,
+  Clock,
+  RefreshCw,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/app/hooks";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
+import { SectionErrorBoundary } from "@/shared/components/SectionErrorBoundary";
+import { useSyncStatus, useTriggerSyncAll } from "@/modules/ad-accounts/hooks";
 import {
   BarChart,
   Bar,
@@ -122,10 +134,33 @@ function StatCard({
 }
 
 export function DashboardPage() {
+  usePageTitle("Dashboard");
+  const user = useAppSelector((s) => s.auth.user);
   const { data: summary, isLoading: summaryLoading } = useDashboardSummary();
   const { data: trends, isLoading: trendsLoading } = useTrends();
   const { data: bdSummary } = useBdSummary();
   const { data: costBreakdown } = useCostBreakdown();
+  const { data: syncStatus } = useSyncStatus();
+  const syncAllMut = useTriggerSyncAll();
+
+  const firstName = user?.name?.split(" ")[0] || "there";
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const todayStr = new Date().toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const trialDaysLeft = (() => {
+    if (!user?.trialEndsAt) return null;
+    const diff = Math.ceil(
+      (new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000,
+    );
+    return diff > 0 ? diff : 0;
+  })();
 
   if (summaryLoading) {
     return (
@@ -170,21 +205,45 @@ export function DashboardPage() {
   const allPlatforms = ["meta", "google", "linkedin"];
   const displayPlatforms = allPlatforms.map((id) => {
     const existing = s.platformBreakdown.find((p) => p.platform === id);
-    return existing || { platform: id, spend: 0, leads: 0, cpl: null, ctr: 0, clicks: 0, impressions: 0, notConnected: true };
+    return (
+      existing || {
+        platform: id,
+        spend: 0,
+        leads: 0,
+        cpl: null,
+        ctr: 0,
+        clicks: 0,
+        impressions: 0,
+        notConnected: true,
+      }
+    );
   });
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">
-          Your growth intelligence overview
-        </p>
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {greeting}, {firstName} 👋
+          </h1>
+          <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+            <Calendar className="h-3.5 w-3.5" />
+            {todayStr}
+          </p>
+        </div>
+        <div className="flex items-center gap-2 mt-2 sm:mt-0">
+          {user?.subscriptionStatus === "trial" && trialDaysLeft !== null && (
+            <Badge variant="secondary" className="gap-1">
+              Trial — {trialDaysLeft} day{trialDaysLeft !== 1 ? "s" : ""}{" "}
+              remaining
+            </Badge>
+          )}
+        </div>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {/* Stat Cards — 6 KPIs */}
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <StatCard
           title="Total Growth Spend"
           value={fmt(s.totalGrowthSpend)}
@@ -193,26 +252,45 @@ export function DashboardPage() {
         />
         <StatCard
           title="Total Leads"
-          value={fmtNum(s.totalLeads)}
+          value={s.totalLeads > 0 ? fmtNum(s.totalLeads) : "No data"}
           subtitle={`${fmtNum(s.totalConversions)} conversions`}
           icon={Users}
         />
         <StatCard
           title="Avg. CPL"
-          value={s.avgCPL != null ? fmt(s.avgCPL) : "—"}
-          subtitle={`CPA: ${s.avgCPA != null ? fmt(s.avgCPA) : "—"}`}
+          value={s.avgCPL != null && s.avgCPL > 0 ? fmt(s.avgCPL) : "N/A"}
+          subtitle={`CPA: ${s.avgCPA != null && s.avgCPA > 0 ? fmt(s.avgCPA) : "N/A"}`}
           icon={Target}
         />
         <StatCard
-          title="Blended ROI"
-          value={pct(s.blendedROI)}
-          subtitle={
+          title="Best Platform"
+          value={
             s.bestChannel
-              ? `Best: ${PLATFORM_LABELS[s.bestChannel] || s.bestChannel}`
-              : undefined
+              ? PLATFORM_LABELS[s.bestChannel] || s.bestChannel
+              : "N/A"
           }
-          icon={s.blendedROI >= 0 ? TrendingUp : TrendingDown}
-          color={s.blendedROI >= 0 ? "bg-emerald-500/10" : "bg-red-500/10"}
+          icon={TrendingUp}
+          color="bg-emerald-500/10"
+        />
+        <StatCard
+          title="Total Campaigns"
+          value={fmtNum(s.totalCampaigns || 0)}
+          icon={Megaphone}
+        />
+        <StatCard
+          title="Blended CTR"
+          value={(() => {
+            const tc = s.platformBreakdown.reduce(
+              (a, p) => a + (p.clicks || 0),
+              0,
+            );
+            const ti = s.platformBreakdown.reduce(
+              (a, p) => a + (p.impressions || 0),
+              0,
+            );
+            return ti > 0 ? pct((tc / ti) * 100) : "N/A";
+          })()}
+          icon={MousePointerClick}
         />
       </div>
 
@@ -243,9 +321,7 @@ export function DashboardPage() {
         <Card>
           <CardContent className="p-5">
             <p className="text-sm text-muted-foreground">Total Growth Cost</p>
-            <p className="text-xl font-bold mt-1">
-              {fmt(s.totalGrowthSpend)}
-            </p>
+            <p className="text-xl font-bold mt-1">{fmt(s.totalGrowthSpend)}</p>
           </CardContent>
         </Card>
       </div>
@@ -376,84 +452,86 @@ export function DashboardPage() {
 
       {/* Platform Table */}
       <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Platform Performance</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/40">
-                    <th className="px-4 py-3 text-left font-medium">
-                      Platform
-                    </th>
-                    <th className="px-4 py-3 text-right font-medium">Spend</th>
-                    <th className="px-4 py-3 text-right font-medium">Leads</th>
-                    <th className="px-4 py-3 text-right font-medium">CPL</th>
-                    <th className="px-4 py-3 text-right font-medium">CTR</th>
-                    <th className="px-4 py-3 text-right font-medium">Clicks</th>
-                    <th className="px-4 py-3 text-right font-medium">
-                      Impressions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayPlatforms.map((p, idx) => (
-                    <tr
-                      key={p.platform}
-                      className={cn(
-                        "border-b",
-                        idx % 2 === 0 ? "bg-background" : "bg-muted/10",
-                      )}
-                    >
-                      <td className="px-4 py-3 font-medium capitalize">
-                        <div className="flex items-center gap-2">
-                          {PLATFORM_LABELS[p.platform] || p.platform}
-                          {"notConnected" in p && p.notConnected && (
-                            <span className="inline-flex rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                              Not connected
-                            </span>
-                          )}
-                        </div>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Platform Performance</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/40">
+                  <th className="px-4 py-3 text-left font-medium">Platform</th>
+                  <th className="px-4 py-3 text-right font-medium">Spend</th>
+                  <th className="px-4 py-3 text-right font-medium">Leads</th>
+                  <th className="px-4 py-3 text-right font-medium">CPL</th>
+                  <th className="px-4 py-3 text-right font-medium">CTR</th>
+                  <th className="px-4 py-3 text-right font-medium">Clicks</th>
+                  <th className="px-4 py-3 text-right font-medium">
+                    Impressions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayPlatforms.map((p, idx) => (
+                  <tr
+                    key={p.platform}
+                    className={cn(
+                      "border-b",
+                      idx % 2 === 0 ? "bg-background" : "bg-muted/10",
+                    )}
+                  >
+                    <td className="px-4 py-3 font-medium capitalize">
+                      <div className="flex items-center gap-2">
+                        {PLATFORM_LABELS[p.platform] || p.platform}
+                        {"notConnected" in p && p.notConnected && (
+                          <span className="inline-flex rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                            Not connected
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    {"notConnected" in p && p.notConnected ? (
+                      <td colSpan={6} className="px-4 py-3 text-right">
+                        <Link to="/accounts">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 text-xs"
+                          >
+                            <Plug className="mr-1.5 h-3 w-3" />
+                            Connect
+                          </Button>
+                        </Link>
                       </td>
-                      {"notConnected" in p && p.notConnected ? (
-                        <td colSpan={6} className="px-4 py-3 text-right">
-                          <Link to="/accounts">
-                            <Button size="sm" variant="outline" className="h-7 text-xs">
-                              <Plug className="mr-1.5 h-3 w-3" />
-                              Connect
-                            </Button>
-                          </Link>
+                    ) : (
+                      <>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {fmt(p.spend)}
                         </td>
-                      ) : (
-                        <>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {fmt(p.spend)}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {fmtNum(p.leads)}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {p.ctr > 0 ? pct(p.ctr) : "—"}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {fmtNum(p.clicks)}
-                          </td>
-                          <td className="px-4 py-3 text-right tabular-nums">
-                            {fmtNum(p.impressions)}
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {fmtNum(p.leads)}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {p.ctr > 0 ? pct(p.ctr) : "—"}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {fmtNum(p.clicks)}
+                        </td>
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {fmtNum(p.impressions)}
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* BD & Cost Breakdown */}
       <div className="grid gap-4 lg:grid-cols-2">

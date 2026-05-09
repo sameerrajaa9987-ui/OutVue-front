@@ -10,6 +10,7 @@ export type DashboardSummary = {
   avgCPL: number;
   avgCPA: number;
   blendedROI: number;
+  totalCampaigns: number;
   bestChannel: string | null;
   worstChannel: string | null;
   platformBreakdown: {

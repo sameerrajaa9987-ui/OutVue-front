@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   Users,
   Mic,
@@ -98,6 +99,7 @@ const EMPTY: FormData = {
 };
 
 export function EcosystemPage() {
+  usePageTitle("Ecosystem Tracking");
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -156,7 +158,12 @@ export function EcosystemPage() {
       followUpActions: Number(form.followUpActions),
       opportunitiesCreated: Number(form.opportunitiesCreated),
       revenueConverted: Number(form.revenueConverted),
-      relationshipValue: form.relationshipValue === "high" ? 8 : form.relationshipValue === "medium" ? 5 : 3,
+      relationshipValue:
+        form.relationshipValue === "high"
+          ? 8
+          : form.relationshipValue === "medium"
+            ? 5
+            : 3,
       engagementQuality: form.engagementQuality,
     };
     try {
@@ -330,9 +337,7 @@ export function EcosystemPage() {
                 <p className="text-xs text-muted-foreground">
                   Total Leads Generated
                 </p>
-                <p className="text-2xl font-bold">
-                  {summary?.totalLeads ?? 0}
-                </p>
+                <p className="text-2xl font-bold">{summary?.totalLeads ?? 0}</p>
               </div>
             </div>
           </CardContent>
@@ -607,7 +612,9 @@ export function EcosystemPage() {
           ) : sorted.length === 0 ? (
             <div className="flex flex-col items-center py-16">
               <Users className="h-12 w-12 text-muted-foreground/40 mb-4" />
-              <p className="font-semibold">No ecosystem activities logged yet</p>
+              <p className="font-semibold">
+                No ecosystem activities logged yet
+              </p>
               <p className="text-sm text-muted-foreground mt-1">
                 Click <span className="font-medium">Log Activity</span> to get
                 started.

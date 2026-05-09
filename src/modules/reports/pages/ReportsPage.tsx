@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   FileText,
   FileSpreadsheet,
@@ -65,6 +66,7 @@ const PDF_SECTIONS = [
 ];
 
 export function ReportsPage() {
+  usePageTitle("Reports");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [platform, setPlatform] = useState("");

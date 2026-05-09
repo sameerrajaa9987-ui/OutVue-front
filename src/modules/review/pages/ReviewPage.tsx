@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePageTitle } from "@/shared/lib/usePageTitle";
 import {
   CalendarDays,
   TrendingUp,
@@ -33,7 +34,13 @@ const MONTHS = [
 ];
 const fmt = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
 
-function Delta({ value, invert = false }: { value: number | null; invert?: boolean }) {
+function Delta({
+  value,
+  invert = false,
+}: {
+  value: number | null;
+  invert?: boolean;
+}) {
   if (value == null) {
     return (
       <span className="inline-flex items-center gap-0.5 text-xs font-medium text-muted-foreground">
@@ -59,6 +66,7 @@ function Delta({ value, invert = false }: { value: number | null; invert?: boole
 }
 
 export function ReviewPage() {
+  usePageTitle("Monthly Review");
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -149,7 +157,10 @@ export function ReviewPage() {
                     {fmt(review.performance.marketing.spend)}
                   </p>
                   <div className="mt-2">
-                    <Delta value={review.performance.marketing.spendDelta} invert />
+                    <Delta
+                      value={review.performance.marketing.spendDelta}
+                      invert
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -168,9 +179,7 @@ export function ReviewPage() {
               </Card>
               <Card>
                 <CardContent className="p-5">
-                  <p className="text-xs text-muted-foreground mb-1">
-                    CPL
-                  </p>
+                  <p className="text-xs text-muted-foreground mb-1">CPL</p>
                   <p className="text-2xl font-bold">
                     {review.performance.marketing.cpl != null
                       ? fmt(review.performance.marketing.cpl)
@@ -178,9 +187,7 @@ export function ReviewPage() {
                   </p>
                   <div className="mt-2">
                     {review.performance.marketing.cplDelta != null ? (
-                      <Delta
-                        value={-review.performance.marketing.cplDelta}
-                      />
+                      <Delta value={-review.performance.marketing.cplDelta} />
                     ) : (
                       <span className="inline-flex items-center gap-0.5 text-xs font-medium text-muted-foreground">
                         <Minus className="h-3 w-3" />
