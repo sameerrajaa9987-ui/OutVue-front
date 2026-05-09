@@ -11,7 +11,6 @@ import {
   ClipboardList,
   CalendarDays,
   Sparkles,
-  Network,
   type LucideIcon,
 } from "lucide-react";
 import type { Role } from "@/modules/auth/types";

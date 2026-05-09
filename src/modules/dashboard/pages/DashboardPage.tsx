@@ -185,6 +185,7 @@ export function DashboardPage() {
     avgCPL: 0,
     avgCPA: 0,
     blendedROI: 0,
+    blendedCTR: null,
     totalCampaigns: 0,
     bestChannel: null,
     worstChannel: null,
@@ -243,7 +244,7 @@ export function DashboardPage() {
           title="Total Growth Spend"
           value={fmt(s.totalGrowthSpend)}
           icon={DollarSign}
-          trend={s.blendedROI}
+          trend={s.blendedROI ?? undefined}
         />
         <StatCard
           title="Total Leads"
@@ -274,17 +275,9 @@ export function DashboardPage() {
         />
         <StatCard
           title="Blended CTR"
-          value={(() => {
-            const tc = s.platformBreakdown.reduce(
-              (a, p) => a + (p.clicks || 0),
-              0,
-            );
-            const ti = s.platformBreakdown.reduce(
-              (a, p) => a + (p.impressions || 0),
-              0,
-            );
-            return ti > 0 ? pct((tc / ti) * 100) : "N/A";
-          })()}
+          value={
+            s.blendedCTR != null && s.blendedCTR > 0 ? pct(s.blendedCTR) : "N/A"
+          }
           icon={MousePointerClick}
         />
       </div>
@@ -510,7 +503,7 @@ export function DashboardPage() {
                           {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
-                          {p.ctr > 0 ? pct(p.ctr) : "—"}
+                          {p.ctr != null && p.ctr > 0 ? pct(p.ctr) : "—"}
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
                           {fmtNum(p.clicks)}

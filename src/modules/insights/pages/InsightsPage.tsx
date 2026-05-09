@@ -105,6 +105,11 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
               </p>
               <p className="text-sm">{rec.suggestedAction}</p>
             </div>
+            <p className="text-xs text-gray-400 mt-2 italic">
+              ⚠️{" "}
+              {rec.disclaimer ||
+                "This is a decision-support insight, not financial or regulated advice."}
+            </p>
           </div>
         </div>
       </CardContent>

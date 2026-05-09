@@ -9,7 +9,8 @@ export type DashboardSummary = {
   totalConversions: number;
   avgCPL: number;
   avgCPA: number;
-  blendedROI: number;
+  blendedROI: number | null;
+  blendedCTR: number | null;
   totalCampaigns: number;
   bestChannel: string | null;
   worstChannel: string | null;
@@ -19,8 +20,8 @@ export type DashboardSummary = {
     leads: number;
     clicks: number;
     impressions: number;
-    cpl: number;
-    ctr: number;
+    cpl: number | null;
+    ctr: number | null;
   }[];
   channelBreakdown: {
     channel: string;

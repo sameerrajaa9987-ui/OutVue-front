@@ -282,7 +282,9 @@ export function EcosystemPage() {
           <ArrowUpDown
             className={cn(
               "h-3 w-3",
-              sortKey === field ? "text-foreground" : "text-muted-foreground/40",
+              sortKey === field
+                ? "text-foreground"
+                : "text-muted-foreground/40",
             )}
           />
         </span>

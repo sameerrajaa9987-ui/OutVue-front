@@ -7,6 +7,7 @@ export type Recommendation = {
   priority: "high" | "medium" | "low";
   reasoning: string;
   suggestedAction: string;
+  disclaimer?: string;
 };
 
 export type RecommendationSummary = {
