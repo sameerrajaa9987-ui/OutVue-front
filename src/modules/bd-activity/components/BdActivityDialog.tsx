@@ -49,11 +49,11 @@ export function BdActivityDialog({
     defaultValues: {
       type: "",
       name: "",
-      cost: 0,
+      cost: "" as unknown as number,
       date: "",
-      leadsGenerated: 0,
-      opportunitiesCreated: 0,
-      revenueConverted: 0,
+      leadsGenerated: "" as unknown as number,
+      opportunitiesCreated: "" as unknown as number,
+      revenueConverted: "" as unknown as number,
       notes: "",
     },
   });
@@ -75,11 +75,11 @@ export function BdActivityDialog({
           : {
               type: "",
               name: "",
-              cost: 0,
+              cost: "" as unknown as number,
               date: "",
-              leadsGenerated: 0,
-              opportunitiesCreated: 0,
-              revenueConverted: 0,
+              leadsGenerated: "" as unknown as number,
+              opportunitiesCreated: "" as unknown as number,
+              revenueConverted: "" as unknown as number,
               notes: "",
             },
       );

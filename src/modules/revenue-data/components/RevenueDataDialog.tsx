@@ -44,10 +44,10 @@ export function RevenueDataDialog({
     resolver: zodResolver(schema),
     defaultValues: {
       source: "",
-      leads: 0,
-      conversions: 0,
-      dealValue: 0,
-      recurringRevenue: 0,
+      leads: "" as unknown as number,
+      conversions: "" as unknown as number,
+      dealValue: "" as unknown as number,
+      recurringRevenue: "" as unknown as number,
       period: "",
     },
   });
@@ -66,10 +66,10 @@ export function RevenueDataDialog({
             }
           : {
               source: "",
-              leads: 0,
-              conversions: 0,
-              dealValue: 0,
-              recurringRevenue: 0,
+              leads: "" as unknown as number,
+              conversions: "" as unknown as number,
+              dealValue: "" as unknown as number,
+              recurringRevenue: "" as unknown as number,
               period: "",
             },
       );

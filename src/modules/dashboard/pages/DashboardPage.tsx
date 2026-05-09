@@ -8,7 +8,10 @@ import {
   PieChart as PieIcon,
   ArrowUpRight,
   ArrowDownRight,
+  Plug,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -164,6 +167,12 @@ export function DashboardPage() {
     value: p.spend,
   }));
 
+  const allPlatforms = ["meta", "google", "linkedin"];
+  const displayPlatforms = allPlatforms.map((id) => {
+    const existing = s.platformBreakdown.find((p) => p.platform === id);
+    return existing || { platform: id, spend: 0, leads: 0, cpl: null, ctr: 0, clicks: 0, impressions: 0, notConnected: true };
+  });
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -208,7 +217,7 @@ export function DashboardPage() {
       </div>
 
       {/* Spend Breakdown Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="p-5">
             <p className="text-sm text-muted-foreground">Marketing Spend</p>
@@ -228,6 +237,14 @@ export function DashboardPage() {
             <p className="text-sm text-muted-foreground">Operational Cost</p>
             <p className="text-xl font-bold mt-1">
               {fmt(s.totalOperationalCost)}
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5">
+            <p className="text-sm text-muted-foreground">Total Growth Cost</p>
+            <p className="text-xl font-bold mt-1">
+              {fmt(s.totalGrowthSpend)}
             </p>
           </CardContent>
         </Card>
@@ -358,8 +375,7 @@ export function DashboardPage() {
       </div>
 
       {/* Platform Table */}
-      {s.platformBreakdown.length > 0 && (
-        <Card>
+      <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Platform Performance</CardTitle>
           </CardHeader>
@@ -382,7 +398,7 @@ export function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {s.platformBreakdown.map((p, idx) => (
+                  {displayPlatforms.map((p, idx) => (
                     <tr
                       key={p.platform}
                       className={cn(
@@ -391,26 +407,46 @@ export function DashboardPage() {
                       )}
                     >
                       <td className="px-4 py-3 font-medium capitalize">
-                        {PLATFORM_LABELS[p.platform] || p.platform}
+                        <div className="flex items-center gap-2">
+                          {PLATFORM_LABELS[p.platform] || p.platform}
+                          {"notConnected" in p && p.notConnected && (
+                            <span className="inline-flex rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                              Not connected
+                            </span>
+                          )}
+                        </div>
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {fmt(p.spend)}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {fmtNum(p.leads)}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {p.ctr > 0 ? pct(p.ctr) : "—"}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {fmtNum(p.clicks)}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {fmtNum(p.impressions)}
-                      </td>
+                      {"notConnected" in p && p.notConnected ? (
+                        <td colSpan={6} className="px-4 py-3 text-right">
+                          <Link to="/accounts">
+                            <Button size="sm" variant="outline" className="h-7 text-xs">
+                              <Plug className="mr-1.5 h-3 w-3" />
+                              Connect
+                            </Button>
+                          </Link>
+                        </td>
+                      ) : (
+                        <>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {fmt(p.spend)}
+                          </td>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {fmtNum(p.leads)}
+                          </td>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {p.ctr > 0 ? pct(p.ctr) : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {fmtNum(p.clicks)}
+                          </td>
+                          <td className="px-4 py-3 text-right tabular-nums">
+                            {fmtNum(p.impressions)}
+                          </td>
+                        </>
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -418,7 +454,6 @@ export function DashboardPage() {
             </div>
           </CardContent>
         </Card>
-      )}
 
       {/* BD & Cost Breakdown */}
       <div className="grid gap-4 lg:grid-cols-2">

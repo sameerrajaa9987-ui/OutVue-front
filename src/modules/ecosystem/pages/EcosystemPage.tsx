@@ -47,12 +47,13 @@ const ACTIVITY_TYPES = [
 ];
 
 const RELATIONSHIP_OPTIONS = ["low", "medium", "high"] as const;
-const QUALITY_OPTIONS = ["low", "medium", "high"] as const;
+const QUALITY_OPTIONS = ["poor", "average", "good", "excellent"] as const;
 
 const QUALITY_COLORS: Record<string, string> = {
-  high: "bg-emerald-500/10 text-emerald-600",
-  medium: "bg-amber-500/10 text-amber-600",
-  low: "bg-red-500/10 text-red-600",
+  excellent: "bg-emerald-500/10 text-emerald-600",
+  good: "bg-emerald-500/10 text-emerald-600",
+  average: "bg-amber-500/10 text-amber-600",
+  poor: "bg-red-500/10 text-red-600",
 };
 
 const fmt = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
@@ -93,7 +94,7 @@ const EMPTY: FormData = {
   opportunitiesCreated: 0,
   revenueConverted: 0,
   relationshipValue: "medium",
-  engagementQuality: "medium",
+  engagementQuality: "average",
 };
 
 export function EcosystemPage() {
@@ -141,7 +142,7 @@ export function EcosystemPage() {
               ? "medium"
               : "low"
           : (e.relationshipValue as string) || "medium",
-      engagementQuality: e.engagementQuality || "medium",
+      engagementQuality: e.engagementQuality || "average",
     });
     setShowForm(true);
   }
@@ -155,7 +156,7 @@ export function EcosystemPage() {
       followUpActions: Number(form.followUpActions),
       opportunitiesCreated: Number(form.opportunitiesCreated),
       revenueConverted: Number(form.revenueConverted),
-      relationshipValue: form.relationshipValue,
+      relationshipValue: form.relationshipValue === "high" ? 8 : form.relationshipValue === "medium" ? 5 : 3,
       engagementQuality: form.engagementQuality,
     };
     try {
@@ -461,7 +462,7 @@ export function EcosystemPage() {
                   className="mt-1"
                   type="number"
                   min={0}
-                  value={form.cost}
+                  value={form.cost || ""}
                   onChange={(e) => setForm({ ...form, cost: +e.target.value })}
                 />
               </div>
@@ -471,7 +472,7 @@ export function EcosystemPage() {
                   className="mt-1"
                   type="number"
                   min={0}
-                  value={form.leadsGenerated}
+                  value={form.leadsGenerated || ""}
                   onChange={(e) =>
                     setForm({ ...form, leadsGenerated: +e.target.value })
                   }
@@ -483,7 +484,7 @@ export function EcosystemPage() {
                   className="mt-1"
                   type="number"
                   min={0}
-                  value={form.opportunitiesCreated}
+                  value={form.opportunitiesCreated || ""}
                   onChange={(e) =>
                     setForm({ ...form, opportunitiesCreated: +e.target.value })
                   }
@@ -495,7 +496,7 @@ export function EcosystemPage() {
                   className="mt-1"
                   type="number"
                   min={0}
-                  value={form.revenueConverted}
+                  value={form.revenueConverted || ""}
                   onChange={(e) =>
                     setForm({ ...form, revenueConverted: +e.target.value })
                   }
