@@ -33,7 +33,15 @@ const MONTHS = [
 ];
 const fmt = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
 
-function Delta({ value, invert = false }: { value: number; invert?: boolean }) {
+function Delta({ value, invert = false }: { value: number | null; invert?: boolean }) {
+  if (value == null) {
+    return (
+      <span className="inline-flex items-center gap-0.5 text-xs font-medium text-muted-foreground">
+        <Minus className="h-3 w-3" />
+        New this month
+      </span>
+    );
+  }
   const effective = invert ? -value : value;
   const positive = effective >= 0;
   const Icon = positive ? TrendingUp : TrendingDown;
@@ -161,24 +169,24 @@ export function ReviewPage() {
               <Card>
                 <CardContent className="p-5">
                   <p className="text-xs text-muted-foreground mb-1">
-                    Blended ROI
+                    CPL
                   </p>
                   <p className="text-2xl font-bold">
-                    {review.performance.marketing.cpl > 0
-                      ? (
-                          ((review.performance.marketing.leads *
-                            review.performance.marketing.cpl -
-                            review.performance.marketing.spend) /
-                            review.performance.marketing.spend) *
-                          100
-                        ).toFixed(1)
-                      : "0.0"}
-                    %
+                    {review.performance.marketing.cpl != null
+                      ? fmt(review.performance.marketing.cpl)
+                      : "—"}
                   </p>
                   <div className="mt-2">
-                    <Delta
-                      value={-review.performance.marketing.cplDelta}
-                    />
+                    {review.performance.marketing.cplDelta != null ? (
+                      <Delta
+                        value={-review.performance.marketing.cplDelta}
+                      />
+                    ) : (
+                      <span className="inline-flex items-center gap-0.5 text-xs font-medium text-muted-foreground">
+                        <Minus className="h-3 w-3" />
+                        No lead data yet
+                      </span>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -190,8 +190,8 @@ export function DashboardPage() {
         />
         <StatCard
           title="Avg. CPL"
-          value={fmt(s.avgCPL)}
-          subtitle={`CPA: ${fmt(s.avgCPA)}`}
+          value={s.avgCPL != null ? fmt(s.avgCPL) : "—"}
+          subtitle={`CPA: ${s.avgCPA != null ? fmt(s.avgCPA) : "—"}`}
           icon={Target}
         />
         <StatCard
@@ -400,7 +400,7 @@ export function DashboardPage() {
                         {fmtNum(p.leads)}
                       </td>
                       <td className="px-4 py-3 text-right tabular-nums">
-                        {p.cpl > 0 ? fmt(p.cpl) : "—"}
+                        {p.cpl != null && p.cpl > 0 ? fmt(p.cpl) : "—"}
                       </td>
                       <td className="px-4 py-3 text-right tabular-nums">
                         {p.ctr > 0 ? pct(p.ctr) : "—"}
