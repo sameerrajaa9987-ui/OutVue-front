@@ -10,6 +10,7 @@ export type MarketingSpend = {
   conversions: number;
   startDate: string;
   endDate: string;
+  source: "manual" | "synced";
   createdAt: string;
   updatedAt: string;
 };

@@ -6,6 +6,8 @@ import {
   ChevronLeft,
   ChevronRight,
   BarChart3,
+  CloudDownload,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,6 +43,26 @@ const pct = (n: number) => `${n.toFixed(1)}%`;
 function platformLabel(val: string) {
   return MARKETING_PLATFORMS.find((p) => p.value === val)?.label ?? val;
 }
+
+const SOURCE_BADGES: Record<
+  string,
+  { label: string; className: string }
+> = {
+  manual: {
+    label: "Manual",
+    className: "bg-gray-100 text-gray-600 border-gray-200",
+  },
+  synced: {
+    label: "Synced",
+    className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  },
+};
+
+const PLATFORM_LABELS: Record<string, string> = {
+  meta: "Meta",
+  google: "Google",
+  linkedin: "LinkedIn",
+};
 
 export function MarketingSpendPage() {
   const [filters, setFilters] = useState<Filters>({});
@@ -152,8 +174,8 @@ export function MarketingSpendPage() {
               <BarChart3 className="h-12 w-12 text-muted-foreground/40 mb-4" />
               <h3 className="text-lg font-semibold">No campaigns yet</h3>
               <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                Add your first marketing campaign to start tracking spend and
-                performance.
+                Add your first marketing campaign or connect an ad account to
+                start tracking spend and performance.
               </p>
               <Button className="mt-4" onClick={openCreate}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -166,21 +188,19 @@ export function MarketingSpendPage() {
                 <thead>
                   <tr className="border-b bg-muted/40">
                     <th className="px-4 py-3 text-left font-medium">
+                      Campaign
+                    </th>
+                    <th className="px-4 py-3 text-left font-medium">
                       Platform
                     </th>
                     <th className="px-4 py-3 text-left font-medium">
-                      Campaign
+                      Source
                     </th>
                     <th className="px-4 py-3 text-right font-medium">Spend</th>
-                    <th className="px-4 py-3 text-right font-medium">Clicks</th>
-                    <th className="px-4 py-3 text-right font-medium">
-                      Impressions
-                    </th>
                     <th className="px-4 py-3 text-right font-medium">Leads</th>
-                    <th className="px-4 py-3 text-right font-medium">Conv.</th>
                     <th className="px-4 py-3 text-right font-medium">CPL</th>
                     <th className="px-4 py-3 text-right font-medium">CTR</th>
-                    <th className="px-4 py-3 text-left font-medium">Period</th>
+                    <th className="px-4 py-3 text-left font-medium">Date</th>
                     <th className="px-4 py-3 text-right font-medium">
                       Actions
                     </th>
@@ -193,6 +213,11 @@ export function MarketingSpendPage() {
                       item.impressions > 0
                         ? (item.clicks / item.impressions) * 100
                         : 0;
+                    const isSynced = item.source === "synced";
+                    const sourceBadge =
+                      SOURCE_BADGES[item.source] || SOURCE_BADGES.manual;
+                    const syncedPlatformLabel =
+                      PLATFORM_LABELS[item.platform] || item.platform;
                     return (
                       <tr
                         key={item.id}
@@ -201,6 +226,9 @@ export function MarketingSpendPage() {
                           idx % 2 === 0 ? "bg-background" : "bg-muted/10",
                         )}
                       >
+                        <td className="px-4 py-3 font-medium">
+                          {item.campaignName}
+                        </td>
                         <td className="px-4 py-3">
                           <span
                             className={cn(
@@ -212,23 +240,26 @@ export function MarketingSpendPage() {
                             {platformLabel(item.platform)}
                           </span>
                         </td>
-                        <td className="px-4 py-3 font-medium">
-                          {item.campaignName}
+                        <td className="px-4 py-3">
+                          <span
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium",
+                              sourceBadge.className,
+                            )}
+                          >
+                            {isSynced && (
+                              <CloudDownload className="h-3 w-3" />
+                            )}
+                            {isSynced
+                              ? syncedPlatformLabel
+                              : sourceBadge.label}
+                          </span>
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
                           {fmt(item.spend)}
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
-                          {fmtNum(item.clicks)}
-                        </td>
-                        <td className="px-4 py-3 text-right tabular-nums">
-                          {fmtNum(item.impressions)}
-                        </td>
-                        <td className="px-4 py-3 text-right tabular-nums">
                           {fmtNum(item.leads)}
-                        </td>
-                        <td className="px-4 py-3 text-right tabular-nums">
-                          {fmtNum(item.conversions)}
                         </td>
                         <td className="px-4 py-3 text-right tabular-nums">
                           {cpl > 0 ? fmt(cpl) : "—"}
@@ -238,27 +269,39 @@ export function MarketingSpendPage() {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-xs text-muted-foreground">
                           {new Date(item.startDate).toLocaleDateString("en-GB")}
-                          {" – "}
-                          {new Date(item.endDate).toLocaleDateString("en-GB")}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => openEdit(item)}
-                            >
-                              <Pencil className="h-3.5 w-3.5" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-destructive hover:text-destructive"
-                              onClick={() => setDeleteTarget(item)}
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
+                            {isSynced ? (
+                              <span
+                                className="inline-flex items-center gap-1 text-xs text-muted-foreground"
+                                title={`Synced from ${syncedPlatformLabel}. Edit in ${syncedPlatformLabel} Ads Manager.`}
+                              >
+                                <Info className="h-3.5 w-3.5" />
+                                <span className="hidden sm:inline">
+                                  Synced
+                                </span>
+                              </span>
+                            ) : (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  onClick={() => openEdit(item)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive hover:text-destructive"
+                                  onClick={() => setDeleteTarget(item)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </Button>
+                              </>
+                            )}
                           </div>
                         </td>
                       </tr>
