@@ -1,7 +1,5 @@
-import { useEffect, useMemo } from "react";
 import {
   TrendingUp,
-  TrendingDown,
   DollarSign,
   Users,
   Target,
@@ -12,10 +10,7 @@ import {
   Plug,
   Megaphone,
   MousePointerClick,
-  AlertCircle,
   Calendar,
-  Clock,
-  RefreshCw,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,8 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/app/hooks";
 import { usePageTitle } from "@/shared/lib/usePageTitle";
-import { SectionErrorBoundary } from "@/shared/components/SectionErrorBoundary";
-import { useSyncStatus, useTriggerSyncAll } from "@/modules/ad-accounts/hooks";
+import { useSyncStatus } from "@/modules/ad-accounts/hooks";
 import {
   BarChart,
   Bar,
@@ -141,7 +135,7 @@ export function DashboardPage() {
   const { data: bdSummary } = useBdSummary();
   const { data: costBreakdown } = useCostBreakdown();
   const { data: syncStatus } = useSyncStatus();
-  const syncAllMut = useTriggerSyncAll();
+  void syncStatus; // used for connected-platform detection below
 
   const firstName = user?.name?.split(" ")[0] || "there";
   const hour = new Date().getHours();
@@ -154,13 +148,13 @@ export function DashboardPage() {
     year: "numeric",
   });
 
-  const trialDaysLeft = (() => {
-    if (!user?.trialEndsAt) return null;
-    const diff = Math.ceil(
-      (new Date(user.trialEndsAt).getTime() - Date.now()) / 86400000,
-    );
-    return diff > 0 ? diff : 0;
-  })();
+  let trialDaysLeft: number | null = null;
+  if (user?.trialEndsAt) {
+    const endMs = new Date(user.trialEndsAt).getTime();
+    const nowMs = new Date().getTime();
+    const diff = Math.ceil((endMs - nowMs) / 86400000);
+    trialDaysLeft = diff > 0 ? diff : 0;
+  }
 
   if (summaryLoading) {
     return (
@@ -191,6 +185,7 @@ export function DashboardPage() {
     avgCPL: 0,
     avgCPA: 0,
     blendedROI: 0,
+    totalCampaigns: 0,
     bestChannel: null,
     worstChannel: null,
     platformBreakdown: [],

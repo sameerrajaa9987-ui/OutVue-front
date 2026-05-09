@@ -264,33 +264,31 @@ export function EcosystemPage() {
     { type: "—", roi: -Infinity },
   );
 
-  const SortHeader = ({
-    label,
-    field,
-    align = "left",
-  }: {
-    label: string;
-    field: SortKey;
-    align?: "left" | "right";
-  }) => (
-    <th
-      className={cn(
-        "px-4 py-3 font-medium cursor-pointer select-none hover:bg-muted/60 transition-colors",
-        align === "right" ? "text-right" : "text-left",
-      )}
-      onClick={() => toggleSort(field)}
-    >
-      <span className="inline-flex items-center gap-1">
-        {label}
-        <ArrowUpDown
-          className={cn(
-            "h-3 w-3",
-            sortKey === field ? "text-foreground" : "text-muted-foreground/40",
-          )}
-        />
-      </span>
-    </th>
-  );
+  function renderSortHeader(
+    label: string,
+    field: SortKey,
+    align: "left" | "right" = "left",
+  ) {
+    return (
+      <th
+        className={cn(
+          "px-4 py-3 font-medium cursor-pointer select-none hover:bg-muted/60 transition-colors",
+          align === "right" ? "text-right" : "text-left",
+        )}
+        onClick={() => toggleSort(field)}
+      >
+        <span className="inline-flex items-center gap-1">
+          {label}
+          <ArrowUpDown
+            className={cn(
+              "h-3 w-3",
+              sortKey === field ? "text-foreground" : "text-muted-foreground/40",
+            )}
+          />
+        </span>
+      </th>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -625,22 +623,14 @@ export function EcosystemPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/40">
-                    <SortHeader label="Name" field="name" />
-                    <SortHeader label="Type" field="activityType" />
-                    <SortHeader label="Date" field="date" />
-                    <SortHeader label="Cost" field="cost" align="right" />
-                    <SortHeader
-                      label="Leads"
-                      field="leadsGenerated"
-                      align="right"
-                    />
-                    <SortHeader
-                      label="Revenue"
-                      field="revenueConverted"
-                      align="right"
-                    />
-                    <SortHeader label="ROI" field="roi" align="right" />
-                    <SortHeader label="Quality" field="engagementQuality" />
+                    {renderSortHeader("Name", "name")}
+                    {renderSortHeader("Type", "activityType")}
+                    {renderSortHeader("Date", "date")}
+                    {renderSortHeader("Cost", "cost", "right")}
+                    {renderSortHeader("Leads", "leadsGenerated", "right")}
+                    {renderSortHeader("Revenue", "revenueConverted", "right")}
+                    {renderSortHeader("ROI", "roi", "right")}
+                    {renderSortHeader("Quality", "engagementQuality")}
                     <th className="px-4 py-3 text-right font-medium">
                       Actions
                     </th>

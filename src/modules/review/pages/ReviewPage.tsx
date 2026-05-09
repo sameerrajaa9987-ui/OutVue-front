@@ -8,7 +8,6 @@ import {
   Lightbulb,
   CheckCircle2,
   Zap,
-  Clock,
   Minus,
   ArrowRight,
 } from "lucide-react";
