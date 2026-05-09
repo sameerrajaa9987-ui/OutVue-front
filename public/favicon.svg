@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <!-- Dark slate/teal background matching the CSS variables -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#022c22" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <!-- Emerald/Teal brand gradient -->
+    <linearGradient id="accent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" /> <!-- Emerald -->
+      <stop offset="100%" stop-color="#0d9488" /> <!-- Teal -->
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="400" rx="100" fill="url(#bg)" />
+  
+  <!-- The O -->
+  <circle cx="200" cy="200" r="110" fill="none" stroke="url(#accent)" stroke-width="45" />
+  
+  <!-- The V -->
+  <path d="M 140 170 L 200 250 L 260 170" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
